@@ -1,0 +1,1 @@
+http://www.ivoa.net/xml/VOSI/v1.0 ../VOSI-v1.0.xsd
