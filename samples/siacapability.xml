@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<vosi:capabilities xmlns="" xmlns:vosi="http://www.ivoa.net/xml/VOSI/v1.0"
+<vosi:capabilities 
+              xmlns:vosi="http://www.ivoa.net/xml/VOSICapabilities/v1.0"
               xmlns:vr="http://www.ivoa.net/xml/VOResource/v1.0"
               xmlns:vs="http://www.ivoa.net/xml/VODataService/v1.0"
               xmlns:sia="http://www.ivoa.net/xml/SIA/v1.0"
@@ -17,16 +18,16 @@
   <!--
     - a generic capability (for custom, non-standard interfaces)
     -->
-  <vosi:capability>
+  <capability>
      <interface xsi:type="vr:WebBrowser">
        <accessURL use="full">http://adil.ncsa.uiuc.edu/siaform.html</accessURL>
      </interface>
-  </vosi:capability>
+  </capability>
   
   <!--
     - the SIA capability
     -->
-  <vosi:capability xsi:type="sia:SimpleImageAccess" 
+  <capability xsi:type="sia:SimpleImageAccess" 
               standardID="ivo://ivoa.net/std/SIA">
 
      <interface xsi:type="vs:ParamHTTP" role="std">
@@ -68,6 +69,6 @@
            <lat>1</lat>
         </size>
      </testQuery>
-  </vosi:capability>
+  </capability>
 
 </vosi:capabilities>
