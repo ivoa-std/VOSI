@@ -17,7 +17,7 @@
   </xsd:annotation>
 
   <!--
-    -  the root element for a VOSI availability (section 2.1)
+    -  the root element for a VOSI availability (section 2.3)
     -->
   <xsd:element name="availability" type="tns:Availability"/>
 

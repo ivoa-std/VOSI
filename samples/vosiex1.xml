@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<vosi:capabilities 
+              xmlns:vosi="http://www.ivoa.net/xml/VOSICapabilities/v1.0"
+              xmlns:vr="http://www.ivoa.net/xml/VOResource/v1.0"
+              xmlns:vs="http://www.ivoa.net/xml/VODataService/v1.0"
+              xmlns:sia="http://www.ivoa.net/xml/SIA/v1.0"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://www.ivoa.net/xml/VOSI/v1.0
+                                  http://www.ivoa.net/xml/VOSI/v1.0
+                                  http://www.ivoa.net/xml/VOResource/v1.0
+                                  http://www.ivoa.net/xml/VOResource/v1.0
+                                  http://www.ivoa.net/xml/VODataService/v1.0
+                                  http://www.ivoa.net/xml/VODataService/v1.0
+                                  http://www.ivoa.net/xml/SIA/v1.0
+                                  http://www.ivoa.net/xml/SIA/v1.0">
+
+  
+  <!--
+    - a generic capability (for custom, non-standard interfaces)
+    -->
+  <capability>
+     <interface xsi:type="vr:WebBrowser">
+       <accessURL use="full">http://adil.ncsa.uiuc.edu/siaform.html</accessURL>
+     </interface>
+  </capability>
+  
+  <!--
+    - the SIA capability
+    -->
+  <capability xsi:type="sia:SimpleImageAccess" 
+              standardID="ivo://ivoa.net/std/SIA">
+
+     <interface xsi:type="vs:ParamHTTP" role="std">
+        <accessURL>
+           http://adil.ncsa.uiuc.edu/cgi-bin/voimquery?survey=f&amp;
+        </accessURL>
+
+        <!-- here is a site-specific parameter that this service supports -->
+        <param use="optional" std="false">
+          <name>FREQ</name>
+          <description>Frequency of observation.</description>
+          <unit>Hz</unit>
+          <dataType>real</dataType>
+        </param>
+     </interface>
+
+     <imageServiceType>Pointed</imageServiceType>
+     <maxQueryRegionSize>
+        <long>360.0</long>
+        <lat>180.0</lat>
+     </maxQueryRegionSize>
+     <maxImageExtent>
+        <long>360.0</long>
+        <lat>180.0</lat>
+     </maxImageExtent>
+     <maxImageSize>
+        <long>5000</long>
+        <lat>5000</lat>
+     </maxImageSize>
+     <maxFileSize>100000000</maxFileSize>
+     <maxRecords>5000</maxRecords>
+  </capability>
+
+  <!--
+    -  the interface that returns this document
+    -->
+  <capability standardID="ivo://ivoa.net/std/VOSI#capabilities">
+     <interface xsi:type="vs:ParamHTTP" role="std">
+        <accessURL use="full">
+           http://adil.ncsa.uiuc.edu/cgi-bin/voimquery/capabilities
+        </accessURL>
+     </interface>
+  </capability>
+
+  <!--
+    -  the interface that returns this document
+    -->
+  <capability standardID="ivo://ivoa.net/std/VOSI#availability">
+     <interface xsi:type="vs:ParamHTTP" role="std">
+        <accessURL use="full">
+           http://adil.ncsa.uiuc.edu/cgi-bin/voimquery/availability
+        </accessURL>
+     </interface>
+  </capability>
+
+</vosi:capabilities>

@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+	<title>IVOA Working Group - Working Draft</title>
+	<meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+	<meta name="keywords" content="IVOA, International, Virtual, Observatory, Alliance" />
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+	<meta name="maintainedBy" content="IVOA Document Coordinator, ivoadoc@ivoa.net" />
+	<link rel="stylesheet" href="http://ivoa.net/misc/ivoa_wg.css" type="text/css" />
+</head>
+
+<body>
+<div class="head">
+<a href="http://www.ivoa.net/"><img alt="IVOA" src="http://www.ivoa.net/pub/images/IVOA_wb_300.jpg" width="300" height="169"/></a>
+<h1>IVOA Support Interfaces<br/>
+Version 1.00-20090925</h1>
+<h2>IVOA WG Working Draft 2009 August 25 </h2>
+
+<dl>
+  <dt>This version:</dt>
+  <dd><a href="http://www.ivoa.net/Documents/WD/GWS/WD-VOSI-20090825.html">
+      http://www.ivoa.net/Documents/WD/GWS/WD-VOSI-20090825.html</a></dd>
+
+  <dt>Latest version:</dt>
+
+  <dd><a href="http://www.ivoa.net/Documents/latest/VOSI.html">
+      http://www.ivoa.net/Documents/latest/VOSI.html</a></dd>
+
+  <dt>Previous versions:</dt>
+  <dd><a href="http://www.ivoa.net/Documents/WD/GWS/VOSI-20081030.doc">
+      http://www.ivoa.net/Documents/WD/GWS/VOSI-20081030.doc</a></dd>
+</dl>
+
+<dl>
+	<dt>Working Group:</dt>
+		<dd><a
+  href="http://www.ivoa.net/twiki/bin/view/IVOA/IvoaGridAndWebServices">
+  http://www.ivoa.net/twiki/bin/view/IVOA/IvoaGridAndWebServices</a></dd>
+
+  <dt>Editors:</dt>
+  <dd><a
+  href="http://www.ivoa.net/twiki/bin/view/IVOA/MatthewGraham">Matthew
+  Graham</a><br/>
+    <a
+  href="http://www.ivoa.net/twiki/bin/view/IVOA/GuyRixon">Guy Rixon</a></dd>
+	<dt>Author(s):</dt>
+		<dd>
+			<a
+  href="http://www.ivoa.net/twiki/bin/view/IVOA/IvoaGridAndWebServices">Grid and Web
+  Services Working Group</a><br/>
+			<a href="http://www.ivoa.net/twiki/bin/view/IVOA/"></a>
+		</dd>
+</dl>
+<hr/></div>
+
+<h2><a name="abstract" id="abstract">Abstract</a></h2>
+This document describes the minimum required interface to participate in the IVOA as a web service.
+<div class="status">
+<h2><a name="status" id="status">Status of this Document</a></h2>
+This is a Working Draft. The first release of this document was 2008
+  Oct 30.
+<p></p><br />
+
+<!-- Choose one of the following (and remove the rest)-->
+<!--Note-->
+<!--
+<p>This is an IVOA Note expressing suggestions from and opinions of the authors.<br/>
+It is intended to share best practices, possible approaches, or other perspectives on interoperability with the Virtual Observatory.
+It should not be referenced or otherwise interpreted as a standard specification.</p>
+-->
+<p>This is an IVOA Working Draft for review by IVOA members and other interested parties.<br/>
+It is a draft document and may be updated, replaced, or obsoleted by other documents at any time.
+It is inappropriate to use IVOA Working Drafts as reference materials or to cite them as other than "work in progress.</p>
+<!--Proposed Recommendation
+<p>This is an IVOA Proposed Recommendation made available for public review.<br/>
+It is appropriate to reference this document only as a recommended standard that is under review and which may be changed
+before it is accepted as a full recommendation.</p>
+-->
+<!--Recommendation
+<p>This document has been produced by the IVOA "WG Name"  Working Group.<br/>
+It has been reviewed by IVOA Members and other interested parties, and has been endorsed by the IVOA Executive Committee as an IVOA Recommendation.
+It is a stable document and may be used as reference material or cited as a normative reference from another document. IVOA's role in making the Recommendation is to draw attention to the specification and to promote its widespread deployment.
+This enhances the functionality and interoperability inside the Astronomical Community.</p>
+-->
+
+A list of <a href="http://www.ivoa.net/Documents/">current IVOA Recommendations and other technical documents</a> can be found at http://www.ivoa.net/Documents/.
+
+</div><br />
+
+<h2><a name="acknowledgments" id="acknowledgments">Acknowledgments</a></h2>
+
+<p>This work is based on discussions and actions from the 2003 IVOA
+meeting in Strasbourg and further discussions on registry
+functionality at JHU late in 2003. Later inputs came from a local
+meeting at JHU in Sept. 2004. William O'Mullane and Ani Thakar were the editors and primary authors for these early versions.</p>
+<p>
+The decision to split the interfaces into a mandatory set and optional logging interfaces was taken by GWS-WG at the IVOA meeting of May 2006.
+</p>
+<h2><a id="contents" name="contents">Contents</a></h2>
+<div class="head">
+<ul class="toc">
+<li><a href="#abstract">Abstract</a></li>
+<li><a href="#status">Status</a></li>
+<li><a href="#acknowledgments">Acknowledgments</a></li>
+<li><a href="#contents">Contents</a></li>
+<li><a href="#sec1">1. Introduction</a></li>
+
+<li><a href="#sec2">2. Standard VO interfaces</a></li>
+	<ul class="toc">
+	<li><a href="#sec2_1">2.1 Capability metadata</a></li>
+	<li><a href="#sec2_2">2.2 Non-service metadata (non-normative description)</a></li>
+	<li><a href="#sec2_3">2.3 Availability metadata</a></li>
+	<li><a href="#sec2_4">2.4 Table metadata</a></li>
+	<li><a href="#sec2_5">2.5 Registration of VOSI endpoints</a></li>
+	</ul>
+
+<li><a href="#sec3">3. Changes from previous versions</a></li>
+
+<br/>
+<li><a href="#appA">Appendix 1: XML schema availability</a></li>
+</ul>
+</div>
+<hr/>
+
+
+<br/>
+<h2><a name="sec1">1. Introduction</a></h2>
+<p>Much of the Virtual Observatory (VO) is made up of web services in
+SOAP and REST forms. It is felt there are some basic functions that
+all these services should provide in order to support management of
+the VO.</p>
+<p>
+These standard interfaces are mandated by the VO basic profile for SOAP services and hence should appear in all SOAP services, using the standard WSDL extract in this specification. For REST services, the requirement for the support interfaces is stated in the specification for each kind of service. A contract for a REST service may specify extra constraints (e.g. on the form of the URIs) for the support interfaces. </p><p>
+In the normal requirements manner the words "should" and "shall" are used to convey the level of necessity of the interface. 
+</p>
+
+<br/>
+<h2><a name="sec2">2. Standard VO Interfaces</a></h2>
+<p>The standard interfaces all return metadata without changing the
+state of the service to which they apply. They could, in principle be
+implemented in any of three ways.</p>
+<ol type="1">
+<li> As extra SOAP operations on an existing SOAP endpoint of the service to which they apply. This would be a 'SOAP binding' of VOSI.
+<li> As SOAP operations on a separate SOAP endpoint. This would be an alternate form of the SOAP binding.
+<li> As web resources with distinct URLs, without using the SOAP protocol. This is the 'REST binding' for the standard interfaces. 
+</ol><p>
+This standard requires the REST binding of VOSI even when applied to
+services that otherwise use SOAP. No details of the SOAP binding are
+given in this version of the standard. </p>
+<p>
+In the REST binding, the support interfaces shall have distinct URLs in the HTTP scheme and shall be accessible by the GET operation in the HTTP protocol. The response to an HTTP POST, PUT or DELETE to these resources is not defined by this specification. However, if an implementation has no special action to perform for these requests, the normal response would be a 405 "Method not allowed" error. </p><p>
+The endpoints and interface types for the support interfaces shall be defined in the service's registration using one Capability element for each interface. The standardId values for these Capabilities are given in section 2.4.</p><p>
+When using the REST binding, any HTTP URLs may be used. The client must find the appropriate URLs from the registration and, in general, should not try and infer the URLs from any other URLs for that service. However, standards for specific services may put extra constraints on the form of the URLs.</p>
+</p>
+
+<h3><a name="sec2_1">2.1 Capability metadata</a></h3>
+<p>This interface provides the service metadata in the form of a list of Capability descriptions. Each of these descriptions is an XML element that </p>
+<ul>
+  <li> states that the service provides a particular, IVOA-standard function;
+  <li> lists the interfaces for invoking that function;
+ <li> records any details of the implementation of the function that
+  are not fixed in the standard for that function.
+  </ul>
+  <p>
+E.g., one capability might describe a cone-search function and another the table-access-protocol implementation; these two might well be apply to the same service.</p><p>
+An entry for a service in the resource registry - i.e. its VOResource - contains the Dublin-core resource metadata (identifier, curation information, content description etc.) followed by the service's capability descriptions. Effectively, the resource metadata describe the service to human users and the capability list describes it to software. Therefore, the capability list alone has two uses.</p>
+<ul><li>It may be read by a client application to find out how to drive the service. This presumes that the service has been already been selected and the VOSI endpoint located.
+<li>It may be read by the registry itself to compile the registry entry for the service. In this case, the resource metadata are entered into the registry directly and the service metadata are then read from the service. Since the service implementation usually knows its capabilities, this removes the need for a human to type them into the registry.
+</ul></p><p>The service metadata shall be represented as an XML document which contains a sequence of one or more elements of type <i>{http://www.ivoa.net/xml/VOResource/v1.0}Capability</i> or sub-types thereof.</p><p>
+In the REST binding, the service metadata shall be a single web-resource with a registered URL. The data and time at which the metadata last changed shall be obtained the <i>Last-Modified</i> HTTP-header sent in the response to a GET or HEAD request to the registered URI.</p><p>
+All VO services should provide this interface.
+</p>
+
+<h3><a name="sec2_2">2.2 Non-service metadata (non-normative description)</a></h3>
+<p>There may be other metadata associated with a service than the capability metadata described above.
+<ul><li> Every service has the Dublin-core "resource" metadata.
+<li> Some services are associated with registered applications.
+<li> Some services are associated with registered data collections.
+</ul></p><p>None of these are explicitly provided for in this version of VOSI. Some might be covered in later versions of VOSI.
+</p>
+
+<h3><a name="sec2_3">2.3 Availability metadata</a></h4>
+<p>This interface indicates whether the service is operable and the reliability of the service for extended and scheduled requests. 
+The availability shall be represented as an XML document in which the
+root element is <i>{http://www.ivoa.net/xml/Availability/v0.4}availability</i>. This element
+shall contain child elements providing the following information.</p>
+<ul>
+<li> <i>available</i> - whether the service is currently accepting requests;
+<li> <i>upSince</i> - duration for which the service has been continuously available
+<li> <i>downAt</i> - the instant at which the service is next scheduled to be unavailable
+<li> <i>backAt</i> - the instant at which the service is scheduled to become available again after down time;
+<li> <i>note</i> - textual note, e.g. explaining the reason for unavailaility.
+</ul><p>
+  The elements <i>upSince</i>, <i>downAt</i>, <i>backAt</i> and <i>notes</i> are optional. The <i>available</i> element is mandatory. There may be more than one note element.</p><p>
+The XML document shall conform to the schema given in appendix 1 of this specification.</p><p>
+When reporting availability, the service should do a good check on its underlying parts to see if it is still operational and not just make a simple return from a web server, e.g., if it relies on a database it should check that the database is still up. If any of these check fail, the service should set available to false in the availability output.</p><p>
+If a service wishes to be on-line but unavailable for work (e.g. when a service with a work queue intends to shut down after draining the queue) then the service should set available to false.</p><p>
+There are no special elements in the availability document for the contact details of the service operator. These details may be given as a note element if they are known to the service.</p><p>
+Ultimately some portals may track these heartbeats and compile uptime statistics. With the location we could have 3D global maps of services and availability.</p><p>
+In the REST binding, the availability shall be a single web-resource with a registered URIL</p><p> 
+All VO services shall provide this interface.
+</p>
+
+<h3><a name="sec2_4">2.4 Table metadata</a></h3>
+<p>
+Some services deal with tabular data. These data may be the target of ADQL queries, as in the Table Access Protocol, or they may be the output of other operations, as in SIAP queries. In each case, it is useful if the service describes the details of the tables concerned. It is more useful if this description can be captured in the resource registry.</p><p>
+The <i>VODataService</i> standard defines XML elements for describing a set of tables. These elements can be included in a resource document for a service.</p><p>
+A service which uses tables in its interface should define a VOSI endpoint from which table metadata can be read. The table metadata shall be represented as an XML document  of which the root element is of type <i>{http://www.ivoa.net/xml/VODataService/v1.1}TableSet</i>. This element may contain any mix of elements allowed by the VODataService XML-schema.</p><p>
+In the REST binding, the table metadata shall be a single web-resource with a registered URL.
+</p>
+
+<h3><a name="sec2_5">2.5 Registration of VOSI endpoints</a></h3>
+<p>The endpoints for the service and availability metadata shall be included in the registration of each service that provides them.</p><p>
+An availability endpoint shall be represented by an element named <i>capability</i>, of type <i>{http://www.ivoa.net/xml/VOResource/v1.0}Capability</i>. The value of the <i>standardID</i> attribute of the <i>capability</i> shall be <i>ivo://ivoa.net/std/VOSI#availability</i> (sic; note the use of the document fragment to identify one part of the VOSI standard).</p><p>
+A capabilities endpoint should be represented  an element named <i>capability</i>, of type <i>{http://www.ivoa.net/xml/VOResource/v1.0}Capability</i>. If such a <i>capability</i> is provided then the value its <i>standardID</i> attribute must be <i>ivo://ivoa.net/std/VOSI#capabilities.</i></p><p>
+A tables endpoint should be represented  an element named <i>capability</i>, of type <i>{http://www.ivoa.net/xml/VOResource/v1.0}Capability</i>. If such a <i>capability</i> is provided then the value its <i>standardID</i> attribute must be <i>ivo://ivoa.net/std/VOSI#tables</i>.
+</p>
+
+
+<br/>
+<h2><a name="sec3">3. Changes from previous versions</a></h2>
+<p>The REST binding is made mandatory for all kinds of service. Details of the SOAP binding, including its WSDL contract, are removed.</p><p>
+The definition of the root element for the table-metadata document is corrected. Instead of requiring the <i>tableset</i> element from <i>VODataService 1.1</i> (which element does not exist in that schema), the text now requires an element of type <i>TableSet</i>.
+</p>
+
+
+
+<br/>
+<h2><a name="app1">Appendix 1: XML schema availability</a></h2>
+<pre>
+&lt;xsd:schema targetNamespace="http://www.ivoa.net/xml/Availability/v0.4"
+  xmlns:tns="http://www.ivoa.net/xml/Availability/v0.4"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  elementFormDefault="qualified"
+  attributeFormDefault="unqualified">
+
+  &lt;xsd:element name="availability" type="tns:Availability"/>
+
+  &lt;xsd:complexType name="Availability">
+    &lt;xsd:sequence>
+      
+      &lt;xsd:element name="available" type="xsd:boolean">
+        &lt;xsd:annotation>
+          &lt;xsd:documentation>Indicates whether the service is currently
+          available.&lt;/xsd:documentation>
+        &lt;/xsd:annotation>
+      &lt;/xsd:element>
+
+      &lt;xsd:element name="upSince" type="xsd:dateTime" minOccurs="0">
+        &lt;xsd:annotation>
+          &lt;xsd:documentation>The instant at which the service last became
+          available.&lt;/xsd:documentation>
+        &lt;/xsd:annotation>
+      &lt;/xsd:element>
+
+      &lt;xsd:element name="downAt" type="xsd:dateTime" minOccurs="0">
+        &lt;xsd:annotation>
+          &lt;xsd:documentation>The instant at which the service is next scheduled to become
+            unavailable.&lt;/xsd:documentation>
+        &lt;/xsd:annotation>
+      &lt;/xsd:element>
+
+      &lt;xsd:element name="backAt" type="xsd:dateTime" minOccurs="0">
+        &lt;xsd:annotation>
+          &lt;xsd:documentation>The instant at which the service is scheduled to become available again
+            after a period of unavailability.&lt;/xsd:documentation>
+        &lt;/xsd:annotation>
+      &lt;/xsd:element>
+
+      &lt;xsd:element name="note" type="xsd:string" minOccurs="0" maxOccurs="unbounded">
+        &lt;xsd:annotation>
+          &lt;xsd:documentation>A textual note concerning availability.&lt;/xsd:documentation>
+        &lt;/xsd:annotation>
+      &lt;/xsd:element>
+
+    &lt;/xsd:sequence>
+  &lt;/xsd:complexType>
+
+&lt;/xsd:schema>
+
+
+</pre>
+
+<br/>
+<!--
+<h2><a name="references">References</a></h2>
+
+<p>[1] Author(s), <i>Title</i>
+<br/><a href="http://">http://</a>
+</p>
+-->
+
+
+</body></html>

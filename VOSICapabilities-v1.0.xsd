@@ -20,7 +20,7 @@
               schemaLocation="http://www.ivoa.net/xml/VOResource/v1.0" />
 
   <!--
-    -  the root element for a VOSI capabilities metadata (section 2.3)
+    -  the root element for a VOSI capabilities metadata (section 2.1)
     -->
   <xsd:element name="capabilities">
      <xsd:annotation>
