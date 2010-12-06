@@ -233,17 +233,34 @@ services should provide in order to support management of the VO.
 </p>
 
 <p>In this architecture, users employ a variety of tools (from the
-User Layer) to discover and access archives and services of interest
-(represented in the Resource Layer). VOSI ensures that all of these
-services have a common interface that describes the capabilities of
-the resource (which IVOA standard function is being supported, such as a SSAP + SSLDM
-service) and how to invoke this service, including records of any
-details of the implementation or the functions that are not fixed in
-the standard for that function. VOSI also defines the various possible
-states of this service, such as available, up since, down at, back
-at, etc. This allows for interoperable code to manage all VO services.
-</p>
+User Layer) to discover and access archives and services--that is,
+resources--of interest (represented in the Resource Layer).  A
+registry plays a role in discovery by harvesting metadata that
+describe archives and services and making them searchable from a
+central service.  The VOSI interface provides a means for a service to
+provide some of this metadata itself; this allows a registry to pull
+the metadata from the service rather than relying on a human to
+provide it (e.g. by typing the data into a registration form
+manually).  This mechanism can aake it easier to collect highly
+detailed metadata (e.g. descriptions of columns in a catalog) that
+might not be practically provided otherwise.  As some of this metadata
+describes the service interface and how it behaves, other applications
+can use this information for controlling how they use the service.
+Even when the service is "discovered" through some means other than a
+registry, an application can still understand how to use the service
+by querying for this information directly.  
+<p>
 
+<p>
+Once a user discovers data and services of interest, she will want to
+use engage them in an analysis process.  Success requires that the selected
+services are actually up and running properly as a down service can
+cause auotmated processing to fail completely.  Registry and workflow
+services can assist with this by tracking the availability of
+services and alerting users about downtime.  We envision that VOSI
+will allow VO projects to better track the overall health of the VO
+ecosystem.
+</p>
 
 <h2><a name="sec2">2. Interface bindings</a></h2>
 <p>The standard interface returns metadata without changing the
