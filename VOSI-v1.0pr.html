@@ -173,16 +173,17 @@ astronomical research, education, and outreach. The <strong>International Virtua
 <li><a href="#acknowledgments">Acknowledgments</a></li>
 <li><a href="#contents">Contents</a></li>
 <li><a href="#sec1">1. Introduction</a></li>
-<ul class="toc"><li><a href="#sec1_1">1.1 The role in the IVOA Architecture</a></li>
-<li><a href="#sec2">2. Standard VO interfaces</a></li>
+<ul class="toc"><li><a href="#sec1_1">1.1 The role in the IVOA Architecture</a></li></ul>
+<li><a href="#sec2">2. Interfaces bindings</a></li>
+<li><a href="#sec3">3. Metadata specification</a>
 	<ul class="toc">
-	<li><a href="#sec2_1">2.1 Capability metadata</a></li>
-	<li><a href="#sec2_2">2.2 Non-service metadata (non-normative description)</a></li>
-	<li><a href="#sec2_3">2.3 Availability metadata</a></li>
-	<li><a href="#sec2_4">2.4 Table metadata</a></li>
-	<li><a href="#sec2_5">2.5 Registration of VOSI endpoints</a></li>
-	</ul>
-
+	<li><a href="#sec3_1">3.1 Capability metadata</a></li>
+	<li><a href="#sec3_2">3.2 Non-service metadata (non-normative)</a></li>
+	<li><a href="#sec3_3">3.3 Availability metadata</a></li>
+	<li><a href="#sec3_4">3.4 Table metadata</a></li>
+	</ul></li>
+<li><a href="#sec4">4. Registration of VOSI endpoints</a></li>
+<li><a href="#sec5">5. Example VOSI responses</a></li>
 <br/>
 <li><a href="#appA">Appendix A: VOSI XML schemas</a></li>
 <li><a href="#appB">Appendix B: Changes from previous versions</a></li>
@@ -364,7 +365,7 @@ attribute to identify the sub-type (see section 2.2.1 of
    characterized by additional metadata provided by a standard XML
     schema extension of <i>Capability</i> for that protocol. The extension metadata is enabled by
    adding a <i>xsi:type</i> attribute to the <i>capability</i> element set to the
-   <i>Capability</i> sub-type value defined in the extension schema for that protocol (see example below).  </dd>
+   <i>Capability</i> sub-type value defined in the extension schema for that protocol (see the examples in <a href="#sec5">section 5</a> below).  </dd>
 </dl>
 </td></tr></tbody></table>
 </blockquote>
@@ -372,7 +373,7 @@ attribute to identify the sub-type (see section 2.2.1 of
 
 <p>
 The VOResource list of capabilities should include capabilities describing VOSI
-endpoints as specified in section 4.
+endpoints as specified in <a href="#sec4">section 4</a>.
 </p>
 
 
@@ -473,7 +474,8 @@ endpoint for the VOSI function.  For the REST binding, this
 <i>accessURL</i> element must set the <i>use</i> attribute to "full".
 Furthermore, for the REST binding, this document recommends using the
 <i>{http://www.ivoa.net/xml/VODataService/v1.1}ParamHTTP</i> interface
-type to encode VOSI endpoints (see example given in section 2.1).
+type to encode VOSI endpoints (see examples given in
+<a href="#sec5">section 5</a>). 
 </p>
 
 
@@ -641,7 +643,7 @@ resource describing a TAP service.  </div>
               schemaLocation="http://www.ivoa.net/xml/VOResource/v1.0" /&gt;
 
   &lt;!--
-    -  the root element for a VOSI capabilities metadata (section 2.1)
+    -  the root element for a VOSI capabilities metadata (section 3.1)
     --&gt;
   &lt;xsd:element name="capabilities"&gt;
      &lt;xsd:annotation&gt;
@@ -696,7 +698,7 @@ resource describing a TAP service.  </div>
   &lt;/xsd:annotation&gt;
 
   &lt;!--
-    -  the root element for a VOSI availability (section 2.3)
+    -  the root element for a VOSI availability (section 3.3)
     --&gt;
   &lt;xsd:element name="availability" type="tns:Availability"/&gt;
 
@@ -755,7 +757,43 @@ resource describing a TAP service.  </div>
 <a name="appA3">
 <h3>A.3.  The Complete VOSITables Schema</h3></a>
 
-<br/>
+<pre>
+&lt;xsd:schema targetNamespace="http://www.ivoa.net/xml/VOSICapabilities/v1.0"
+            xmlns:tns="http://www.ivoa.net/xml/VOSICapabilities/v1.0"
+            xmlns:vr="http://www.ivoa.net/xml/VOResource/v1.0"
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            elementFormDefault="qualified"
+            attributeFormDefault="unqualified"
+            version="1.0rc1"&gt;
+
+  &lt;xsd:annotation&gt;
+     &lt;xsd:documentation&gt;
+       A schema for formatting table metadata as returned by a 
+       tables resource, defined by the IVOA Support Interfaces 
+       specification (VOSI). 
+       See http://www.ivoa.net/Documents/latest/VOSI.html.  
+     &lt;/xsd:documentation&gt;
+  &lt;/xsd:annotation&gt;
+
+  &lt;xsd:import namespace="http://www.ivoa.net/xml/VODataService/v1.1"
+              schemaLocation="http://www.ivoa.net/xml/VODataService/v1.1" /&gt;
+
+  &lt;!--
+    -  the root element for a VOSI table metadata (section 3.4)
+    --&gt;
+  &lt;xsd:element name="tableset" type="vs:TableSet" &gt;
+     &lt;xsd:annotation&gt;
+       &lt;xsd:documentation&gt;
+         A description of the table metadata supported by the 
+         service associated with a VOSI-enabled resource.
+       &lt;/xsd:documentation&gt;
+     &lt;/xsd:annotation&gt;
+  &lt;/xsd:element&gt;
+
+&lt;/xsd:schema&gt;
+</pre>
+
 <h2><a name="appB">Applendix B: Changes from previous versions</a></h2>
 
 <h4>Changes since PR-20100311</h4>
