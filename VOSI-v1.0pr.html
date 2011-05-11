@@ -829,16 +829,16 @@ metadata and its typical use by service clients.
 
 <p>
 Some publishing registries [4] provide a publically accessible
-publishing tool:  it allows any data service provider to "register"
-his service by providing the necessary metadata adequate to describe
-it.  Such a tool typically provides a form that the provider fills out
-to enter all the metadata; the form processor uses those inputs to
-format a VOResource record that describes the service based on the
-metadata entered by the provider.  Prior to the registry's support for
-the VOSI metadata functions, entering all of the metadata
-(particularly, fully describing all of the table columns) would often
-be laborious; consequently, providers are effectively discouraged from
-providing the mostly optional information.  
+publishing tool: it allows any data service provider to "register" his
+service by providing the necessary metadata adequate to describe it.
+Such a tool typically provides a form that the provider fills out to
+enter all the metadata; the form processor uses those inputs to format
+a VOResource record that describes the service based on that metadata.
+Prior to the registry's support for the VOSI metadata functions,
+entering all of the metadata (particularly, fully describing all of
+the table columns) would often be laborious; consequently, providers
+are effectively discouraged from providing the mostly optional
+information.
 </p>
 
 <p>
@@ -865,20 +865,19 @@ endpoints and refresh service description held by the registry.
 <p>
 We note that pulling certain metadata from the service itself is
 expected to save the provider time and effort because the information
-is in large part inherently available to service implementation.  This
-most obviously applies to the table metadata: the provider's
+is in large part inherently available to the service implementation.
+This most obviously applies to the table metadata: the provider's
 underlying database will normally have access to table schemas which
-can be accessed to provide, for instance, detailed descriptions of all
-the tables and their columns.  It is less natural, perhaps, for the
-service to have natural access to the capability information; however,
-with the growing use of service toolkits that allow a provider to
-quickly deploy compliant IVOA services, it is possible that the
-capability information could naturally be assembled from the
-configuration information that was used to set up the service.  Of
-course, if the provider is forced to create static XML documents
-manually to implement the VOSI functions, it's unlikely that this has
-saved the her any time over entering the metadata into a publishing
-tool.  
+can be used to provide, for instance, detailed descriptions of all the
+tables and their columns.  It is less natural, perhaps, for the
+service to have access to the capability information; however, with
+the growing use of service toolkits that allow a provider to quickly
+deploy compliant IVOA services, it is possible that the capability
+information could naturally be assembled from the configuration
+information that was used to set up the service.  Of course, if the
+provider is forced to create static XML documents manually to
+implement the VOSI functions, it's unlikely that this has saved the
+her any time over entering the metadata into a publishing tool.
 </p>
 
 <p>
@@ -891,8 +890,8 @@ that are fully compliant.  A second goal is to make that metadata
 available so that the user can plan its use of the service: for
 example, the user, through some tool, might browse through the table
 column descriptions to figure out how to form her query.  In this
-latter use, client tool can either use the registry as the source of
-this information or the service itself via its VOSI functions.  The
+latter use, the client tool can either use the registry as the source
+of this information or the service itself via its VOSI functions.  The 
 question that arises for the client tool developer then is, which
 source--the registry or the service--should be preferred?  
 </p>
@@ -921,17 +920,19 @@ from the service itself.
 </p>
 
 <p>
+
 We have implied in the above discussion that the capability and table
 metadata are the same whether they are retrieved from the registry or
 from the service.  It is possible, however, that the service could
-change--new capabilities could be added or table columns could be
-added--and the registry could (at least temporarily, depending on the
-registry) get out of sync with the service.  This circumstance may
-occur rarely; nevertheless, if being up-to-date is important, then the
-client may need to be more sophisticated in its retrieval.  That is,
-it could retrieve the resource description from the registry; if the
+change--new capabilities or table columns could be added--and the
+registry could (at least temporarily, depending on the registry) get
+out of sync with the service.  This circumstance may occur rarely;
+nevertheless, if being up-to-date is important, then the client may
+need to be more sophisticated in its retrieval.  That is, it could
+retrieve the resource description from the registry; then if the
 description indicates support for VOSI, the VOSI URLs would be
-accessed to get the latest, up-to-date information.  
+accessed to get the latest, up-to-date information.
+
 </p>
 
 
