@@ -186,7 +186,8 @@ astronomical research, education, and outreach. The <strong>International Virtua
 <li><a href="#sec5">5. Example VOSI responses</a></li>
 <br/>
 <li><a href="#appA">Appendix A: VOSI XML schemas</a></li>
-<li><a href="#appB">Appendix B: Changes from previous versions</a></li>
+<li><a href="#appB">Appendix B: Use Case for Capability Harvesting (non-normative)</a></li>
+<li><a href="#appC">Appendix C: Changes from previous versions</a></li>
 <li><a href="#ref">References</a></li>
 </ul>
 </div>
@@ -809,8 +810,130 @@ resource describing a TAP service.  </div>
 
 &lt;/xsd:schema>
 </pre>
-<br/>
-<h2><a name="appB">Applendix B: Changes from previous versions</a></h2>
+
+<h2><a name="appB">Appendix B: Use Case for Capability Harvesting
+(non-normative)</a></h2> 
+
+<p>
+In the <a href="#sec1_2">section 1.2</a>, we summarized the of the role
+the metadata retrieval functions (sections <a href="#sec3_1">3.1</a>
+and <a href="#sec3_4">3.4</a>) play in the discovery of services.  In
+particular, it mentions that a registry can harvest this information
+from a service's VOSI interface to save the provider from entering the
+information explicitly into a web form.  In this appendix, we describe
+this use case in more detail, including both the publishing of the
+metadata and its typical use by service clients.
+</p>
+
+<p>
+Some publishing registries [4] provide a publically accessible
+publishing tool:  it allows any data service provider to "register"
+his service by providing the necessary metadata adequate to describe
+it.  Such a tool typically provides a form that the provider fills out
+to enter all the metadata; the form processor uses those inputs to
+format a VOResource record that describes the service based on the
+metadata entered by the provider.  Prior to the registry's support for
+the VOSI metadata functions, entering all of the metadata
+(particularly, fully describing all of the table columns) would often
+be laborious; consequently, providers are effectively discouraged from
+providing the mostly optional information.  
+</p>
+
+<p>
+With support for the VOSI metadata functions, the registry's
+publishing tool can now offer an alternative mechanism for providing
+much of the information.  After generally describing the service via
+core metadata (e.g. it's title, identifier, general description, contact
+information, etc.), the registry can offer the option of entering the
+VOSI URLs that provide the capability and table metadata.  In the case
+of TAP, where these VOSI functions are mandated as part of the TAP
+interface, it would only be necessary for the user to enter the TAP
+service's base URL (in VOResource parlance, the "access URL").  In
+either case, the tool would access the VOSI URLs, pull over the
+metadata, integrate it into the core metadata, and show the provider the
+combined results before publishing it to the registry.  The tool might
+also ask the provider if this data is expected to change over time and
+thus whether the VOSI URLs should be polled regularly to update the
+service description held by the registry.  Alternatively, the tool may
+may allow the provider to quickly update the service description via a
+single button click that causes the tool to re-access the VOSI
+endpoints and refresh service description held by the registry.
+</p>
+
+<p>
+We note that pulling certain metadata from the service itself is
+expected to save the provider time and effort because the information
+is in large part inherently available to service implementation.  This
+most obviously applies to the table metadata: the provider's
+underlying database will normally have access to table schemas which
+can be accessed to provide, for instance, detailed descriptions of all
+the tables and their columns.  It is less natural, perhaps, for the
+service to have natural access to the capability information; however,
+with the growing use of service toolkits that allow a provider to
+quickly deploy compliant IVOA services, it is possible that the
+capability information could naturally be assembled from the
+configuration information that was used to set up the service.  Of
+course, if the provider is forced to create static XML documents
+manually to implement the VOSI functions, it's unlikely that this has
+saved the her any time over entering the metadata into a publishing
+tool.  
+</p>
+
+<p>
+A key goal of the VOSI metadata functions is to encourage the capture
+of metadata that is useful for discovering and selecting services that
+a user will want to work with.  For example, a user may wish to find
+services that access a table containing redshift values.  Or, a user
+may wish to find Simple Spectral Services (a particular capability)
+that are fully compliant.  A second goal is to make that metadata
+available so that the user can plan its use of the service: for
+example, the user, through some tool, might browse through the table
+column descriptions to figure out how to form her query.  In this
+latter use, client tool can either use the registry as the source of
+this information or the service itself via its VOSI functions.  The
+question that arises for the client tool developer then is, which
+source--the registry or the service--should be preferred?  
+</p>
+
+<p>
+This VOSI specification does not recommend the use of one source over
+the other.  The choice, in general, will depend on the context of a
+particular client tool and what it is trying to do, and the
+preferences of developers may indeed evolve over time as, say, VOSI
+support becomes more ubiquitous.  At least initially, client
+tools--particularly general ones that can engage different kinds of
+service protocols--will likely prefer to use the registry for the
+source of capability and table metadata.  The main reason would be
+that not all services will be implemented to support VOSI.  By going
+to the registry in this case, the client gets this metadata for both
+services where it was retrieved via VOSI <em>and</em> where it was
+entered explicitly into a publishing tool by the provider.  Under
+certain circumstances however, say, where the client works with just
+one kind of service protocol like TAP in which VOSI support is
+mandated for compliance, the VOSI interface might be the preferred
+source.  In particular, if the service URL was obtained by the client
+through some means other than the discovery in a registry, then it
+would not be necessary for the client to go to the registry understand
+what can be done with the service; the tool can get this information
+from the service itself.   
+</p>
+
+<p>
+We have implied in the above discussion that the capability and table
+metadata are the same whether they are retrieved from the registry or
+from the service.  It is possible, however, that the service could
+change--new capabilities could be added or table columns could be
+added--and the registry could (at least temporarily, depending on the
+registry) get out of sync with the service.  This circumstance may
+occur rarely; nevertheless, if being up-to-date is important, then the
+client may need to be more sophisticated in its retrieval.  That is,
+it could retrieve the resource description from the registry; if the
+description indicates support for VOSI, the VOSI URLs would be
+accessed to get the latest, up-to-date information.  
+</p>
+
+
+<h2><a name="appC">Appendix C: Changes from previous versions</a></h2>
 
 <h4>Changes since PR-20100311</h4>
 <ul>
