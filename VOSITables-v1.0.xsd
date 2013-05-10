@@ -2,6 +2,7 @@
 <xsd:schema targetNamespace="http://www.ivoa.net/xml/VOSICapabilities/v1.0"
             xmlns:tns="http://www.ivoa.net/xml/VOSICapabilities/v1.0"
             xmlns:vr="http://www.ivoa.net/xml/VOResource/v1.0"
+            xmlns:vs="http://www.ivoa.net/xml/VODataService/v1.1"
             xmlns:xsd="http://www.w3.org/2001/XMLSchema"
             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
             elementFormDefault="qualified"
