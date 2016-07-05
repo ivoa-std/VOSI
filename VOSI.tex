@@ -198,13 +198,19 @@ A service which uses tables in its interface should define a VOSI endpoint from 
 \xmlel{http://www.ivoa.net/xml/VODataService/v1.1\#TableSet}. The table metadata for a single table (see below) shall be represented as an
 XML document of which the root element is of type \xmlel{http://www.ivoa.net/xml/VODataService/v1.1\#Table}. This element may contain any mix of elements allowed by the VODataService XML schema.
 
-In the REST binding, the tableset metadata shall be a hierarchical web resource with a registered URL. This base REST endpoint must support an optional query parameter named detail with value min.
+In the REST binding, the TableSet metadata shall be a hierarchical web resource with a registered URL.  There are two levels of TableSet metadata detail that may be returned from the base \textit{tables} endpoint.  Maximum detail (max) is the complete metadata including all details of the Table elements.  Minimum detail (min) includes the full set of Table elements with names and optional descriptions, but does not include Table elements of type Column or ForeignKey.
+
+If the parameter \textit{detail} accompanies the request with values of either \textit{max} or \textit{min}, the service should take this as a suggestion as to what level of detail to return, but may return either level.  If the parameter \textit{detail} is not present, the service may choose the level of metadata detail to return.
+
+For example, the request:
 
 \begin{verbatim}
 GET http://example.net/srv/tables?detail=min
 \end{verbatim}
 
-If the caller requests detail=min, the response (TableSet) document must not include elements of type Column or ForeignKey; the tables described have names and optional descriptions but no column or foreign key details).
+should be taken as a suggestion to return the minimum level of TableSet metadata detail.
+
+Services with a large number of tables and/or columns cannot normally respond with a usable TableSet document that has the maximum level of detail so may wish to always respond with the minimum level of detail.
 
 The REST endpoint must also support a child resource for each table described in the TableSet document. The child resource must be
 named with the fully-qualified table name and without any intervening schema name. For example:
@@ -213,11 +219,7 @@ named with the fully-qualified table name and without any intervening schema nam
 GET http://example.net/srv/tables/ivoa.ObsCore
 \end{verbatim}
 
-would return a Table document describing the ivoa.ObsCore table.
-
-Services with a large number of tables and/or columns cannot normally respond with a usable TableSet document. These services may
-force the caller to accept the minimum detail level by redirecting requests without the detail=min parameter. The redirect should use HTTP status code 303 (See Other) with a (HTTP header) Location value that includes the detail=min parameter. Clients can make use of detail=min to get a list of available tables and then use the child table resource to get details about individual tables.
- 
+would return a Table document describing the ivoa.ObsCore table in full detail. 
 
 \section{Registration of VOSI endpoints}
 \label{sec:endpoints}
@@ -335,9 +337,9 @@ A sample response from a capabilities resource describing an SIA service.
 \end{lstlisting}
 
 
-\subsection{Example 2: TAP tables}
+\subsection{Example 2: TAP tables, maximum detail}
 
-A sample response from a tables resource describing a TAP service. 
+A sample response from a tables resource describing a TAP service in full (maximum) detail.
 
 \begin{lstlisting}[language=XML]
 <?xml version="1.0" encoding="UTF-8"?>
@@ -397,9 +399,9 @@ A sample response from a tables resource describing a TAP service.
 </vosi:tableset>
 \end{lstlisting}
 
-\subsection{Example 3: Tables, minimal detail}
+\subsection{Example 3: Tables, minimum detail}
 
-A sample response from a tables resource with detail=min parameter (e.g. http://example.net/srv/tables?detail=min).
+A sample response from a tables resource with no Column or ForeignKey elements.
 
 \begin{lstlisting}[language=XML]
 <?xml version="1.0" encoding="UTF-8"?>
@@ -743,7 +745,7 @@ We have implied in the above discussion that the capability and table metadata a
 
 Added alternate root element (table) to VOSITables schema.
 
-Extended VOSITables REST binding to include detail=min param and child table resource for scalability.
+Extended VOSITables REST binding to include detail level and parameter and child table resource for scalability.
 
 Defined \#tables-1.1 standardID.
 
