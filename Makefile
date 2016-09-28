@@ -7,7 +7,7 @@ DOCNAME = VOSI
 DOCVERSION = 1.1
 
 # Publication date, ISO format; update manually for "releases"
-DOCDATE = 2016-04-13
+DOCDATE = 2016-09-28
 
 # What is it you're writing: NOTE, WD, PR, or REC
 DOCTYPE = PR

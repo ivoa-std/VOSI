@@ -212,14 +212,20 @@ should be taken as a suggestion to return the minimum level of TableSet metadata
 
 Services with a large number of tables and/or columns cannot normally respond with a usable TableSet document that has the maximum level of detail so may wish to always respond with the minimum level of detail.
 
-The REST endpoint must also support a child resource for each table described in the TableSet document. The child resource must be
-named with the fully-qualified table name and without any intervening schema name. For example:
+The REST endpoint must also support a child resource for each table described in the TableSet document.  The child resource must be named as it appears in the name of the corresponding child Table element.  For example:
 
 \begin{verbatim}
 GET http://example.net/srv/tables/ivoa.ObsCore
 \end{verbatim}
 
-would return a Table document describing the ivoa.ObsCore table in full detail. 
+would return a Table document describing the ivoa.ObsCore table in full detail, starting:
+
+\begin{verbatim}
+<vosi:table xmlns:vosi="http://www.ivoa.net/xml/VOSITables/v1.0">
+    <name>ivoa.ObsCore</name>
+    <column>
+    ...
+\end{verbatim} 
 
 \section{Registration of VOSI endpoints}
 \label{sec:endpoints}
