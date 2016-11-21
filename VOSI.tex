@@ -249,6 +249,8 @@ A tables endpoint should be represented by an element named \xmlel{capability}, 
 
 With all three VOSI functions, the \xmlel{capability} element that describes the function must contain an \xmlel{interface} element of a type semantically appropriate for the binding of the function to the service; the \xmlel{accessURL} element within the \xmlel{interface} element indicates the endpoint for the VOSI function. For the REST binding, this \xmlel{accessURL} element must set the \xmlel{use} attribute to \texttt{"full"}. Furthermore, for the REST binding, this document recommends using the \xmlel{http://www.ivoa.net/xml/VODataService/v1.1\#ParamHTTP} interface type to encode VOSI endpoints (see the examples given in section~\ref{sec:examples}). 
 
+The capabilities and availability endpoints must not require any credentials to view.  Thus, the \xmlel{interface} registry entries for capabilities and availability must not contain a securityMethod element.
+
 \section{Example VOSI responses}
 \label{sec:examples}
 
