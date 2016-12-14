@@ -88,9 +88,11 @@ Once a user discovers data and services of interest, she will want to engage the
 \section{Interface bindings}
 \label{sec:bindings}
 
+This section explains how services are to report VO support metadata through a standard interface.
+
 The standard interface returns metadata without changing the state of the service with which it is associated. This standard requires a REST binding of VOSI even when applied to services that do not have a RESTful interface.
 
-In the REST binding, the support interfaces shall have distinct URLs in the HTTP scheme and shall be accessible by the GET operation in the HTTP protocol. The response to an HTTP POST, PUT or DELETE to these resources is not defined by this specification. However, if an implementation has no special action to perform for these requests, the normal response would be a HTTP 405 "Method not allowed" status code.
+In the REST binding, the support interfaces shall have distinct URLs in the HTTP scheme and shall be accessible by the GET operation in the HTTP protocol. The response to an HTTP POST, PUT or DELETE to these resources is not defined by this specification. However, if an implementation has no special action to perform for these requests, the normal response would be a HTTP 405 "Method not allowed" status code.  Both the capabilities and availability bindings must be available to anonymous requests.
 
 The endpoints and interface types for the support interface shall be defined in the service's registration using one \xmlel{capability} element for each interface. The values of the \xmlel{standardID} attribute for these Capabilities are given in section~\ref{sec:endpoints}.
 
@@ -136,9 +138,13 @@ An entry for a service in the resource registry - i.e., its VOResource - contain
 \item it may be read by the registry itself to compile the registry entry for the service. In this case, the resource metadata are entered into the registry directly and the service metadata are then read from the service. Since the service implementation usually knows its capabilities, this removes the need for a human to type them into the registry. 
 \end{itemize}
 
-The service metadata shall be represented as an XML document with the root element \xmlel{http://www.ivoa.net/xml/VOSICapabilities/v1.0\#capabilities}. (See Appendix \ref{appendix:capabilities} for the definition of the VOSICapabilities XML schema.) This element must contain one or more child capability elements that describe the capabilities of the service. Given that the capability element is defined to be of type \xmlel{http://www.ivoa.net/xml/VOResource/v1.0\#Capability}, a capability element may be represented by a legal sub-type of 
-\xmlel{http://www.ivoa.net/xml/VOResource/v1.0\#Capability}, in which case, the capability element must use an \xmlel{xsi:type} attribute to identify the sub-type (see section 2.2.1 of VOResource \citep{std:VOR}). 
-
+The service metadata shall be represented as an XML document with the root element:\\
+$$\hbox{\xmlel{http://www.ivoa.net/xml/VOSICapabilities/v1.0\#capabilities}}$$\\
+(See Appendix \ref{appendix:capabilities} for the definition of the VOSICapabilities XML schema.) This element must contain one or more child capability elements that describe the capabilities of the service. Given that the capability element is defined to be of type\\
+$$\hbox{\xmlel{http://www.ivoa.net/xml/VOResource/v1.0\#Capability}}$$\\
+a capability element may be represented by a legal sub-type of\\
+$$\hbox{\xmlel{http://www.ivoa.net/xml/VOResource/v1.0\#Capability}}$$\\
+in which case, the capability element must use an \xmlel{xsi:type} attribute to identify the sub-type (see section 2.2.1 of VOResource \citep{std:VOR}). 
 
 \begin{admonition}{Note}
 The value of the capability element's \xmlel{standardID} attribute is used to indicate the service's support for particular standard protocols (such as Simple Image Access, Simple Cone Search, etc.). In the case of some protocols, the support for the standard is further characterized by additional metadata provided by a standard XML schema extension of \xmlel{Capability} for that protocol. The extension metadata is enabled by adding a \xmlel{xsi:type} attribute to the capability element set to the Capability sub-type value defined in the extension schema for that protocol (see example below). 
@@ -194,9 +200,12 @@ All VO services shall provide this interface.
 
 The VODataService standard \citep{std:VODS11} defines XML elements for describing a set of tables. These elements can be included in a resource document for a service.
 
-A service which uses tables in its interface should define a VOSI endpoint from which table metadata can be read. The table metadata for all content of a service shall be represented as an XML document of which the root element is of type 
-\xmlel{http://www.ivoa.net/xml/VODataService/v1.1\#TableSet}. The table metadata for a single table (see below) shall be represented as an
-XML document of which the root element is of type \xmlel{http://www.ivoa.net/xml/VODataService/v1.1\#Table}. This element may contain any mix of elements allowed by the VODataService XML schema.
+A service which uses tables in its interface should define a VOSI endpoint from which table metadata can be read. The table metadata for all content of a service shall be represented as an XML document of which the root element is of type\\
+$$\hbox{\xmlel{http://www.ivoa.net/xml/VODataService/v1.1\#TableSet}}$$\\
+The table metadata for a single table (see below) shall be represented as an
+XML document of which the root element is of type\\
+$$\hbox{\xmlel{http://www.ivoa.net/xml/VODataService/v1.1\#Table}}$$\\
+This element may contain any mix of elements allowed by the VODataService XML schema.
 
 In the REST binding, the TableSet metadata shall be a hierarchical web resource with a registered URL.  There are two levels of TableSet metadata detail that may be returned from the base \textit{tables} endpoint.  Maximum detail (max) is the complete metadata including all details of the Table elements.  Minimum detail (min) includes the full set of Table elements with names and optional descriptions, but does not include Table elements of type Column or ForeignKey.
 
@@ -245,7 +254,7 @@ An availability endpoint shall be represented by an element named \xmlel{capabil
 
 A capabilities endpoint should be represented by an element named \xmlel{capability}, of type \xmlel{http://www.ivoa.net/xml/VOResource/v1.0\#Capability}. If such a capability is provided then the value of the \xmlel{standardID} attribute must be \nolinkurl{ivo://ivoa.net/std/VOSI#capabilities}.
 
-A tables endpoint should be represented by an element named \xmlel{capability}, of type \xmlel{http://www.ivoa.net/xml/VOResource/v1.0\#Capability}. If such a capability is provided then the value of the \xmlel{standardID} attribute must be \nolinkurl{ivo://ivoa.net/std/VOSI\#tables}.
+A tables endpoint should be represented by an element named \xmlel{capability}, of type \xmlel{http://www.ivoa.net/xml/VOResource/v1.0\#Capability}. If such a capability is provided then the value of the \xmlel{standardID} attribute must be \nolinkurl{ivo://ivoa.net/std/VOSI\#tables}, or, for version 1.1, \nolinkurl{ivo://ivoa.net/std/VOSI\#tables-1.1}.
 
 With all three VOSI functions, the \xmlel{capability} element that describes the function must contain an \xmlel{interface} element of a type semantically appropriate for the binding of the function to the service; the \xmlel{accessURL} element within the \xmlel{interface} element indicates the endpoint for the VOSI function. For the REST binding, this \xmlel{accessURL} element must set the \xmlel{use} attribute to \texttt{"full"}. Furthermore, for the REST binding, this document recommends using the \xmlel{http://www.ivoa.net/xml/VODataService/v1.1\#ParamHTTP} interface type to encode VOSI endpoints (see the examples given in section~\ref{sec:examples}). 
 
@@ -262,17 +271,9 @@ A sample response from a capabilities resource describing an SIA service.
 <?xml version="1.0" encoding="UTF-8"?>
 <vosi:capabilities xmlns:vosi="http://www.ivoa.net/xml/VOSICapabilities/v1.0"
     xmlns:vr="http://www.ivoa.net/xml/VOResource/v1.0"
-    xmlns:vs="http://www.ivoa.net/xml/VODataService/v1.0"
+    xmlns:vs="http://www.ivoa.net/xml/VODataService/v1.1"
     xmlns:sia="http://www.ivoa.net/xml/SIA/v1.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.ivoa.net/xml/VOSI/v1.0 
-        http://www.ivoa.net/xml/VOSI/v1.0
-      http://www.ivoa.net/xml/VOResource/v1.0 
-        http://www.ivoa.net/xml/VOResource/v1.0
-      http://www.ivoa.net/xml/VODataService/v1.0 
-        http://www.ivoa.net/xml/VODataService/v1.0
-      http://www.ivoa.net/xml/SIA/v1.0 
-        http://www.ivoa.net/xml/SIA/v1.0">
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 
   <!-- a generic capability (for custom, non-standard interfaces) -->
   <capability>
@@ -354,7 +355,8 @@ A sample response from a tables resource describing a TAP service in full (maxim
 <vosi:tableset
   xmlns:vosi="http://www.ivoa.net/xml/VOSITables/v1.0"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xmlns:vod="http://www.ivoa.net/xml/VODataService/v1.1">
+  xmlns:vs="http://www.ivoa.net/xml/VODataService/v1.1"
+  version="1.1">
 
   <schema>
     <name>cfht </name>
@@ -362,23 +364,23 @@ A sample response from a tables resource describing a TAP service in full (maxim
       <name>cfht.deepU </name>
       <column>
         <name>cfhtlsID </name>
-        <dataType xsi:type="vod:TAP" size="30">adql:VARCHAR </dataType>
+        <dataType xsi:type="vs:TAP" size="30">adql:VARCHAR </dataType>
       </column>
       <column>
         <name>survey </name>
-        <dataType xsi:type="vod:TAP" size="6">adql:VARCHAR </dataType>
+        <dataType xsi:type="vs:TAP" size="6">adql:VARCHAR </dataType>
       </column>
       <column>
         <name>field </name>
-        <dataType xsi:type="vod:TAP" size="2">adql:VARCHAR </dataType>
+        <dataType xsi:type="vs:TAP" size="2">adql:VARCHAR </dataType>
       </column>
       <column>
         <name>pointing </name>
-        <dataType xsi:type="vod:TAP" size="6">adql:VARCHAR </dataType>
+        <dataType xsi:type="vs:TAP" size="6">adql:VARCHAR </dataType>
       </column>
       <column>
         <name>selectionFilter </name>
-        <dataType xsi:type="vod:TAP" size="2">adql:VARCHAR </dataType>
+        <dataType xsi:type="vs:TAP" size="2">adql:VARCHAR </dataType>
       </column>
     </table>
 
@@ -388,17 +390,17 @@ A sample response from a tables resource describing a TAP service in full (maxim
         <name>key_id </name>
         <description>unique key to join to TAP_SCHEMA.key_columns 
         </description>
-        <dataType xsi:type="vod:TAP" size="64">adql:VARCHAR </dataType>
+        <dataType xsi:type="vs:TAP" size="64">adql:VARCHAR </dataType>
       </column>
       <column>
         <name>from_table </name>
         <description>the table with the foreign key </description>
-        <dataType xsi:type="vod:TAP" size="64">adql:VARCHAR </dataType>
+        <dataType xsi:type="vs:TAP" size="64">adql:VARCHAR </dataType>
       </column>
       <column>
         <name>target_table </name>
         <description>the table with the primary key </description>
-        <dataType xsi:type="vod:TAP" size="64">adql:VARCHAR </dataType>
+        <dataType xsi:type="vs:TAP" size="64">adql:VARCHAR </dataType>
       </column>
     </table>
 
@@ -416,7 +418,8 @@ A sample response from a tables resource with no Column or ForeignKey elements.
 <vosi:tableset
   xmlns:vosi="http://www.ivoa.net/xml/VOSITables/v1.0"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xmlns:vod="http://www.ivoa.net/xml/VODataService/v1.1">
+  xmlns:vs="http://www.ivoa.net/xml/VODataService/v1.1"
+  version="1.1">
 
   <schema>
     <name>cfht </name>
@@ -451,63 +454,64 @@ A sample response from a child table resource (e.g. http://example.net/srv/table
 \begin{lstlisting}[language=XML]
 <?xml version="1.0" encoding="UTF-8"?>
 <vosi:table xmlns:vosi="http://www.ivoa.net/xml/VOSITables/v1.0" 
-    xmlns:vod="http://www.ivoa.net/xml/VODataService/v1.1" 
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" type="output">
+    xmlns:vs="http://www.ivoa.net/xml/VODataService/v1.1" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    type="output" version="1.1">
   <name>TAP_SCHEMA.columns</name>
   <column>
     <name>table_name</name>
     <description>the table this column belongs to</description>
-    <dataType xsi:type="vod:TAPType" size="64">VARCHAR</dataType>
+    <dataType xsi:type="vs:TAPType" size="64">VARCHAR</dataType>
   </column>
   <column>
     <name>column_name</name>
     <description>the column name</description>
-    <dataType xsi:type="vod:TAPType" size="64">VARCHAR</dataType>
+    <dataType xsi:type="vs:TAPType" size="64">VARCHAR</dataType>
   </column>
   <column>
     <name>utype</name>
     <description>lists the utypes of columns in the tableset</description>
-    <dataType xsi:type="vod:TAPType" size="512">VARCHAR</dataType>
+    <dataType xsi:type="vs:TAPType" size="512">VARCHAR</dataType>
   </column>
   <column>
     <name>ucd</name>
     <description>lists the UCDs of columns in the tableset</description>
-    <dataType xsi:type="vod:TAPType" size="64">VARCHAR</dataType>
+    <dataType xsi:type="vs:TAPType" size="64">VARCHAR</dataType>
   </column>
   <column>
     <name>unit</name>
     <description>lists the unit used for column values in the tableset</description>
-    <dataType xsi:type="vod:TAPType" size="64">VARCHAR</dataType>
+    <dataType xsi:type="vs:TAPType" size="64">VARCHAR</dataType>
   </column>
   <column>
     <name>description</name>
     <description>describes the columns in the tableset</description>
-    <dataType xsi:type="vod:TAPType" size="512">VARCHAR</dataType>
+    <dataType xsi:type="vs:TAPType" size="512">VARCHAR</dataType>
   </column>
   <column>
     <name>datatype</name>
     <description>lists the ADQL datatype of columns in the tableset</description>
-    <dataType xsi:type="vod:TAPType" size="64">VARCHAR</dataType>
+    <dataType xsi:type="vs:TAPType" size="64">VARCHAR</dataType>
   </column>
   <column>
     <name>size</name>
     <description>lists the size of variable-length columns in the tableset</description>
-    <dataType xsi:type="vod:TAPType">INTEGER</dataType>
+    <dataType xsi:type="vs:TAPType">INTEGER</dataType>
   </column>
   <column>
     <name>principal</name>
     <description>a principal column; 1 means 1, 0 means 0</description>
-    <dataType xsi:type="vod:TAPType">INTEGER</dataType>
+    <dataType xsi:type="vs:TAPType">INTEGER</dataType>
   </column>
   <column>
     <name>indexed</name>
     <description>an indexed column; 1 means 1, 0 means 0</description>
-    <dataType xsi:type="vod:TAPType">INTEGER</dataType>
+    <dataType xsi:type="vs:TAPType">INTEGER</dataType>
   </column>
   <column>
     <name>std</name>
     <description>a standard column; 1 means 1, 0 means 0</description>
-    <dataType xsi:type="vod:TAPType">INTEGER</dataType>
+    <dataType xsi:type="vs:TAPType">INTEGER</dataType>
   </column>
   <foreignKey>
     <targetTable>TAP_SCHEMA.tables</targetTable>
@@ -542,7 +546,7 @@ A sample response from an availability resource.
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     elementFormDefault="qualified"
     attributeFormDefault="unqualified"
-    version="1.0rc1">
+    version="1.1">
 
   <xsd:annotation>
      <xsd:documentation>
@@ -606,7 +610,7 @@ A sample response from an availability resource.
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     elementFormDefault="qualified"
     attributeFormDefault="unqualified"
-    version="1.0rc1">
+    version="1.1">
 
   <xsd:annotation>
      <xsd:documentation>
