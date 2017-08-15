@@ -156,18 +156,6 @@ In the REST binding, the service metadata shall be a single web resource with a 
 
 All VO services should provide this interface. 
 
-\subsection{Non-service metadata (non-normative)}
-
-There may be other metadata associated with a service than the capability metadata described above.
-
-\begin{itemize}
-\item Every service has the Dublin Core resource metadata \citep{std:DUBLINCORE}.
-\item Some services are associated with registered applications.
-\item Some services are associated with registered data collections. 
-\end{itemize}
-
-None of these are explicitly provided for in this version of VOSI. Some might be covered in later versions of VOSI. 
-
 \subsection{Availability metadata}
 
 This interface indicates whether the service is operable and the reliability of the service for extended and scheduled requests. The availability shall be represented as an XML document in which the root element is \xmlel{http://www.ivoa.net/xml/Availability/v1.0\#availability}. This element shall contain child elements providing the following information:
@@ -235,6 +223,18 @@ would return a Table document describing the ivoa.ObsCore table in full detail, 
     <column>
     ...
 \end{verbatim} 
+
+\subsection{Non-service metadata (non-normative)}
+
+There may be other metadata associated with a service than the capability metadata described above.
+
+\begin{itemize}
+\item Every service has the Dublin Core resource metadata \citep{std:DUBLINCORE}.
+\item Some services are associated with registered applications.
+\item Some services are associated with registered data collections. 
+\end{itemize}
+
+None of these are explicitly provided for in this version of VOSI. Some might be covered in later versions of VOSI. 
 
 \section{Registration of VOSI endpoints}
 \label{sec:endpoints}
