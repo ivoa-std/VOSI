@@ -359,52 +359,33 @@ A sample response from a tables resource describing a TAP service in full (maxim
   version="1.1">
 
   <schema>
-    <name>cfht </name>
+    <name>cfht</name>
     <table type="output">
-      <name>cfht.deepU </name>
+      <name>cfht.deepU</name>
       <column>
         <name>cfhtlsID </name>
-        <dataType xsi:type="vs:TAP" size="30">adql:VARCHAR </dataType>
+        <dataType xsi:type="vs:TAPType" size="30">adql:VARCHAR</dataType>
       </column>
       <column>
         <name>survey </name>
-        <dataType xsi:type="vs:TAP" size="6">adql:VARCHAR </dataType>
+        <dataType xsi:type="vs:TAPType" size="6">adql:VARCHAR</dataType>
       </column>
       <column>
         <name>field </name>
-        <dataType xsi:type="vs:TAP" size="2">adql:VARCHAR </dataType>
+        <dataType xsi:type="vs:TAPType" size="2">adql:VARCHAR</dataType>
       </column>
       <column>
         <name>pointing </name>
-        <dataType xsi:type="vs:TAP" size="6">adql:VARCHAR </dataType>
+        <dataType xsi:type="vs:TAPType" size="6">adql:VARCHAR</dataType>
       </column>
       <column>
         <name>selectionFilter </name>
-        <dataType xsi:type="vs:TAP" size="2">adql:VARCHAR </dataType>
+        <dataType xsi:type="vs:TAPType" size="2">adql:VARCHAR</dataType>
       </column>
     </table>
-
-    <table type="output">
-      <name>TAP_SCHEMA.keys </name>
-      <column>
-        <name>key_id </name>
-        <description>unique key to join to TAP_SCHEMA.key_columns 
-        </description>
-        <dataType xsi:type="vs:TAP" size="64">adql:VARCHAR </dataType>
-      </column>
-      <column>
-        <name>from_table </name>
-        <description>the table with the foreign key </description>
-        <dataType xsi:type="vs:TAP" size="64">adql:VARCHAR </dataType>
-      </column>
-      <column>
-        <name>target_table </name>
-        <description>the table with the primary key </description>
-        <dataType xsi:type="vs:TAP" size="64">adql:VARCHAR </dataType>
-      </column>
-    </table>
-
   </schema>
+  
+  <!-- additonal schema element in minimum detail example omitted for brevity -->
 
 </vosi:tableset>
 \end{lstlisting}
@@ -422,25 +403,25 @@ A sample response from a tables resource with no Column or ForeignKey elements.
   version="1.1">
 
   <schema>
-    <name>cfht </name>
+    <name>cfht</name>
     <table type="output">
-      <name>cfht.deepU </name>
+      <name>cfht.deepU</name>
     </table>
   </schema>
   
   <schema>
     <name>TAP_SCHEMA</schema>
     <table type="output">
-      <name>TAP_SCHEMA.tables </name>
+      <name>TAP_SCHEMA.tables</name>
     </table>
     <table type="output">
-      <name>TAP_SCHEMA.columns </name>
+      <name>TAP_SCHEMA.columns</name>
     </table>
     <table type="output">
-      <name>TAP_SCHEMA.keys </name>
+      <name>TAP_SCHEMA.keys</name>
     </table>
     <table type="output">
-      <name>TAP_SCHEMA.key_columns </name>
+      <name>TAP_SCHEMA.key_columns</name>
     </table>
   </schema>
 
