@@ -1,0 +1,11 @@
+<archdiag xmlns="http://ivoa.net/archdiag">
+	<!-- Registry: x=55, y=150..450 -->
+	<rec name="VOResource" x="64.5" y="155" w="71"/>
+	<rec name="Resource M.D." x="58" y="230" w="84"/>
+	<rec name="VODataService" x="57.5" y="350" w="85"/>
+	<rec name="StandardsRE" x="63" y="375" w="74"/>
+
+	<rec name="Identifiers" x="125" y="425" w="60"/>
+
+	<thisrec name="VOSI" x="568" y="435" w="34"/>
+</archdiag>
