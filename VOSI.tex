@@ -58,7 +58,7 @@ VO service standards previous to VOSI may not be forced to retrospectively imple
 
 \subsection{Role within the VO Architecture}
 
-The IVOA Architecture \citep{note:VOARCH} provides a high-level view of how IVOA standards work together to connect users and applications with providers of data and services, as depicted in the diagram in Figure ~\ref{fig:archdiag}. 
+The IVOA Architecture \citep{2021ivoa.spec.1101D} provides a high-level view of how IVOA standards work together to connect users and applications with providers of data and services, as depicted in the diagram in Figure ~\ref{fig:archdiag}. 
 
 \begin{figure}
 \centering
@@ -113,7 +113,7 @@ This section defines how each of these classes is represented. The following typ
 
 $$\hbox{\xmlel{http://some.name.space\#elementName}}$$
 
-For example, \xmlel{http://www.ivoa.net/xml/VOResource/v1.0\#resource} indicates a XML element named \xmlel{resource} that is described in the XML schema associated with the 'http://www.ivoa.net/xml/VOResource/v1.0' namespace -- in this case, this would be VOResource.xsd \citep{std:VOR}. 
+For example, \xmlel{http://www.ivoa.net/xml/VOResource/v1.0\#resource} indicates a XML element named \xmlel{resource} that is described in the XML schema associated with the 'http://www.ivoa.net/xml/VOResource/v1.0' namespace -- in this case, this would be VOResource.xsd \citep{2018ivoa.spec.0625P}. 
 
 \subsection{Capability metadata}
 
@@ -143,7 +143,7 @@ $$\hbox{\xmlel{http://www.ivoa.net/xml/VOSICapabilities/v1.0\#capabilities}}$$\\
 $$\hbox{\xmlel{http://www.ivoa.net/xml/VOResource/v1.0\#Capability}}$$\\
 a capability element may be represented by a legal sub-type of\\
 $$\hbox{\xmlel{http://www.ivoa.net/xml/VOResource/v1.0\#Capability}}$$\\
-in which case, the capability element must use an \xmlel{xsi:type} attribute to identify the sub-type (see section 2.2.1 of VOResource \citep{std:VOR}). 
+in which case, the capability element must use an \xmlel{xsi:type} attribute to identify the sub-type (see section 2.2.1 of VOResource \citep{2018ivoa.spec.0625P}). 
 
 \begin{admonition}{Note}
 The value of the capability element's \xmlel{standardID} attribute is used to indicate the service's support for particular standard protocols (such as Simple Image Access, Simple Cone Search, etc.). In the case of some protocols, the support for the standard is further characterized by additional metadata provided by a standard XML schema extension of \xmlel{Capability} for that protocol. The extension metadata is enabled by adding a \xmlel{xsi:type} attribute to the capability element set to the Capability sub-type value defined in the extension schema for that protocol (see example below). 
@@ -183,9 +183,9 @@ All VO services shall provide this interface.
 
 \subsection{Table metadata}
 
- Some services deal with tabular data. These data may be the target of ADQL queries, as in TAP \citep{std:TAP}, or they may be the output of other operations, as in SIAP queries. In each case, it is useful if the service describes the details of the tables concerned. It is more useful if this description can be captured in the resource registry.
+ Some services deal with tabular data. These data may be the target of ADQL queries, as in TAP \citep{2017ivoa.spec.0509L}, or they may be the output of other operations, as in SIAP queries. In each case, it is useful if the service describes the details of the tables concerned. It is more useful if this description can be captured in the resource registry.
 
-The VODataService standard \citep{std:VODS11} defines XML elements for describing a set of tables. These elements can be included in a resource document for a service.
+The VODataService standard \citep{2021ivoa.spec.1102D} defines XML elements for describing a set of tables. These elements can be included in a resource document for a service.
 
 A service which uses tables in its interface should define a VOSI endpoint from which table metadata can be read. The table metadata for all content of a service shall be represented as an XML document of which the root element is of type\\
 $$\hbox{\xmlel{http://www.ivoa.net/xml/VODataService/v1.1\#TableSet}}$$\\
@@ -249,7 +249,7 @@ tables (1.0) & \nolinkurl{ivo://ivoa.net/std/VOSI#tables} \\
 tables (1.1) & \nolinkurl{ivo://ivoa.net/std/VOSI#tables-1.1} \\
 \end{tabular}
 
-An availability endpoint shall be represented by an element named \xmlel{capability}, of type \xmlel{http://www.ivoa.net/xml/VOResource/v1.0\#Capability} (defined by the standard VOResource XML schema \citet{std:VOR}). The value of the \xmlel{standardID} attribute of the capability shall be \nolinkurl{ivo://ivoa.net/std/VOSI#availability}.
+An availability endpoint shall be represented by an element named \xmlel{capability}, of type \xmlel{http://www.ivoa.net/xml/VOResource/v1.0\#Capability} (defined by the standard VOResource XML schema \citet{2018ivoa.spec.0625P}). The value of the \xmlel{standardID} attribute of the capability shall be \nolinkurl{ivo://ivoa.net/std/VOSI#availability}.
 
 A capabilities endpoint should be represented by an element named \xmlel{capability}, of type \xmlel{http://www.ivoa.net/xml/VOResource/v1.0\#Capability}. If such a capability is provided then the value of the \xmlel{standardID} attribute must be \nolinkurl{ivo://ivoa.net/std/VOSI#capabilities}.
 
@@ -718,7 +718,7 @@ A sample response from an availability resource.
 
  In the section \ref{sec:introduction}, we summarized the role that the metadata retrieval functions play in the discovery of services. In particular, it mentions that a registry can harvest this information from a service's VOSI interface to save the provider from entering the information explicitly into a web form. In this appendix, we describe this use case in more detail, including both the publishing of the metadata and its typical use by service clients.
 
-Some publishing registries \citep{std:RI1} provide a publicly accessible publishing tool: it allows any data service provider to ``register'' his service by providing the necessary metadata adequate to describe it. Such a tool typically provides a form that the provider fills out to enter all the metadata; the form processor uses those inputs to format a VOResource record that describes the service based on that metadata. Prior to the registry's support for the VOSI metadata functions, entering all of the metadata (particularly, fully describing all of the table columns) would often be laborious; consequently, providers are effectively discouraged from providing the mostly optional information.
+Some publishing registries \citep{2018ivoa.spec.0723D} provide a publicly accessible publishing tool: it allows any data service provider to ``register'' his service by providing the necessary metadata adequate to describe it. Such a tool typically provides a form that the provider fills out to enter all the metadata; the form processor uses those inputs to format a VOResource record that describes the service based on that metadata. Prior to the registry's support for the VOSI metadata functions, entering all of the metadata (particularly, fully describing all of the table columns) would often be laborious; consequently, providers are effectively discouraged from providing the mostly optional information.
 
 With support for the VOSI metadata functions, the registry's publishing tool can now offer an alternative mechanism for providing much of the information. After generally describing the service via core metadata (e.g., its title, identifier, general description, contact information, etc.), the registry can offer the option of entering the VOSI URLs that provide the capability and table metadata. In the case of TAP, where these VOSI functions are mandated as part of the TAP interface, it would only be necessary for the user to enter the TAP service's base URL (in VOResource parlance, the ``access URL''). In either case, the tool would access the VOSI URLs, pull over the metadata, integrate it into the core metadata, and show the provider the combined results before publishing it to the registry. The tool might also ask the provider if this data is expected to change over time and thus whether the VOSI URLs should be polled regularly to update the service description held by the registry. Alternatively, the tool may may allow the provider to quickly update the service description via a single button click that causes the tool to re-access the VOSI endpoints and refresh service description held by the registry.
 
@@ -778,7 +778,7 @@ The REST binding is made mandatory for all kinds of service. Details of the SOAP
 The definition of the root element for the table-metadata document is corrected. Instead of requiring the tableset element from VODataService 1.1 (which element does not exist in that schema), the text now requires an element of type TableSet. 
 
 
-\bibliography{ivoatex/ivoabib}
+\bibliography{ivoatex/ivoabib,ivoatex/docrepo}
 
 
 \end{document}
