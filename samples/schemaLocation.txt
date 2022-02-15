@@ -1,0 +1,3 @@
+http://www.ivoa.net/xml/VOSI/v1.0 ../VOSI-v1.0.xsd
+http://www.ivoa.net/xml/VOSICapabilities/v1.0 ../VOSICapabilities-v1.0.xsd
+http://www.ivoa.net/xml/VOSIAvailability/v1.0 ../VOSIAvailability-v1.0.xsd
