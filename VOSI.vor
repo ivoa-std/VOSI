@@ -1,0 +1,100 @@
+<ri:Resource 
+	xsi:type="vstd:Standard" 
+	created="2022-02-16T08:21:00Z" 
+	updated="2022-02-16T08:21:00Z"
+	status="active"
+	xmlns:vr="http://www.ivoa.net/xml/VOResource/v1.0" 
+	xmlns:vstd="http://www.ivoa.net/xml/StandardsRegExt/v1.0" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:ri="http://www.ivoa.net/xml/RegistryInterface/v1.0"
+	xsi:schemaLocation="http://www.ivoa.net/xml/VOResource/v1.0
+		https://www.ivoa.net/xml/VOResource/v1.0
+	http://www.ivoa.net/xml/StandardsRegExt/v1.0
+		https://www.ivoa.net/xml/StandardsRegExt/v1.0
+	http://www.ivoa.net/xml/VOResource/v1.0
+		https://www.ivoa.net/xml/VOResource/v1.0">
+
+  <title>IVOA Support Interfaces</title>
+  <shortName>VOSI</shortName>
+  <identifier>ivo://ivoa.net/std/VOSI</identifier> 
+  <altIdentifier>doi:10.5479/ADS/bib/2017ivoa.spec.0524G</altIdentifier>
+  <curation>
+    <publisher>IVOA</publisher>
+
+    <creator>
+      <name>Graham, Matthew</name>
+    </creator>
+    <creator>
+      <name>Rixon, Guy</name>
+    </creator>
+    <creator>
+      <name>Dowler, Patrick</name>
+    </creator>
+    <creator>
+      <name>Major, Brian</name>
+    </creator>
+
+    <date role="update">2017-05-24</date>
+    <version>1.1</version>
+    <contact>
+      <name>IVOA GWS WG</name>
+      <email>grid@ivoa.net</email>
+    </contact>
+  </curation>
+  <content>
+    <subject>virtual-observatories</subject>
+
+    <description>
+    	This document describes the minimum interface that a web service requires
+    	to participate in the IVOA. Note that this is not required of standard VO
+    	services developed prior to this specification, although uptake is
+    	strongly encouraged on any subsequent revision. All new standard VO
+    	services, however, must feature a VOSI-compliant interface.
+    </description>
+    <referenceURL>https://ivoa.net/documents/VOSI/</referenceURL>
+    <type>Other</type>
+  	<contentLevel>Research</contentLevel>
+  </content>
+
+  <endorsedVersion status="rec">1.1</endorsedVersion>
+
+	<schema namespace="http://www.ivoa.net/xml/VOSICapabilities/v1.0">
+		<location>http://www.ivoa.net/xml/VOSICapabilities/v1.0</location>
+	</schema>
+	<schema namespace="http://www.ivoa.net/xml/VOSIAvailability/v1.0">
+		<location>http://www.ivoa.net/xml/VOSIAvailability/v1.0</location>
+		<description>This schema is no longer part of the normative content.
+			It is retained for backward compatiblilty, though.</description>
+	</schema>
+	<schema namespace="http://www.ivoa.net/xml/VOSITables/v1.0">
+		<location>http://www.ivoa.net/xml/VOSITables/v1.0</location>
+	</schema>
+
+	<key>
+		<name>availability</name>
+		<description>Legacy standardID for capabilities describing the
+			service availability endpoint defined in VOSI 1.0 and VOSI 1.1.
+		</description>
+	</key>
+	<key>
+		<name>capabilities</name>
+		<description>standardID for capabilities describing the
+			endpoint for retrieving VOSI capability metadata about a service.
+		</description>
+	</key>
+	<key>
+		<name>tables</name>
+		<description>standardID for capabilities describing 
+			endpoints for retrieving VOSI tables metadata compliant to VOSI 
+			version 1.0.
+		</description>
+	</key>
+	<key>
+		<name>tables-1.0</name>
+		<description>standardID for capabilities describing 
+			endpoints for retrieving VOSI tables metadata compliant to VOSI 
+			version 1.1 and later; over #tables, these react to the details
+			parameter.
+		</description>
+	</key>
+</ri:Resource>
