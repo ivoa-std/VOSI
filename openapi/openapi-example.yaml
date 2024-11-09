@@ -1,0 +1,21 @@
+openapi: 3.1.0
+info:
+  title: VOSI endpoints
+  version: "1.1"
+  description: This is more or less the current VOSAI-1.1 standard.
+servers:
+- url: /example
+paths:
+    /tables:
+        $ref: ./vosi-tableset.yaml
+        #$ref: https://haproxy.cadc.dao.nrc.ca/site/vault/files/pdowler/openapi/vosi-tableset.yaml
+    /tables/{name}:
+        $ref: ./vosi-table.yaml
+        #$ref: https://haproxy.cadc.dao.nrc.ca/site/vault/files/pdowler/openapi/vosi-table.yaml
+
+    /availability:
+        $ref: ./paths/vosi-availability.yaml
+        #$ref: https://haproxy.cadc.dao.nrc.ca/site/vault/files/pdowler/openapi/vosi-availability.yaml
+    /capabilities:
+        $ref: ./paths/vosi-capabilities.yaml
+        #$ref: https://haproxy.cadc.dao.nrc.ca/site/vault/files/pdowler/openapi/vosi-capabilities.yaml
