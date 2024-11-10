@@ -18,6 +18,78 @@ get:
             $ref: ./vosi-std-responses.yaml#/permission-denied
         404:
             $ref: ./vosi-std-responses.yaml#/not-found
+post:
+    summary: proto - update table metadata
+    description: |
+        update the tap_schema metadata from description;
+        TBD: what can be changed and what is immutable?
+    parameters:
+      - name: name
+        in: path
+        description: the fully qualified name of the table to create
+        required: true
+        schema:
+            type: string
+    requestBody:
+        $ref: '#/components/schemas/tableDoc'
+    responses:
+        204:
+            description: table updated
+        400:
+            description: update table metadata failed due to invalid input
+            content:
+                text/plain:
+        401:
+            $ref: ./vosi-std-responses.yaml#/not-authenticated
+        403:
+            $ref: ./vosi-std-responses.yaml#/permission-denied
+        404:
+            $ref: ./vosi-std-responses.yaml#/not-found
+put:
+    summary: proto - create table
+    description: create table from description
+    parameters:
+    - name: name
+      in: path
+      description: the fully qualified name of the table to create
+      required: true
+      schema:
+        type: string
+    requestBody:
+        $ref: '#/components/schemas/tableDoc'
+    responses:
+        201:
+          description: table created
+        400:
+            description: create table failed due to invalid input
+            content:
+                text/plain:
+        401:
+            $ref: ./vosi-std-responses.yaml#/not-authenticated
+        403:
+            $ref: ./vosi-std-responses.yaml#/permission-denied
+        404:
+            $ref: ./vosi-std-responses.yaml#/not-found
+delete:
+    summary: proto - delete table
+    parameters:
+    - name: name
+      in: path
+      description: |
+        the table to delete; 
+        TBD: remove from tap_schema and drop from db?
+      required: true
+      schema:
+        type: string
+    responses:
+        204:
+          description: table dropped
+        401:
+            $ref: ./vosi-std-responses.yaml#/not-authenticated
+        403:
+            $ref: ./vosi-std-responses.yaml#/permission-denied
+        404:
+            $ref: ./vosi-std-responses.yaml#/not-found
 
 components:
     schemas:
@@ -30,3 +102,14 @@ components:
                             name: table
                             prefix: vosi
                             namespace: http://www.ivoa.net/xml/VOSITables/v1.0
+                ## Note: adding the VOTable type below has these effects:
+                # put: allows VOTable to be used to create a table, empty only? with rows?
+                # post: allows VOTable to be used to update table metadata, empty only? add rows?
+                # get: allows caller to request table description as an empty VOTable
+                # there are some subtle differences in metadata content
+                application/x-votable+xml:
+                    schema:
+                        type: object
+                        xml:
+                            name: VOTABLE
+                            namespace: http://www.ivoa.net/xml/VOTable/v1.3
