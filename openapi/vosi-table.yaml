@@ -1,0 +1,32 @@
+get:
+    summary: get metadata for the specified table
+    description: provides the table metadata for a single schema or table
+    parameters:
+    - name: name
+      in: path
+      description: a single schema name or table name as provided in tap_schema
+      required: true
+      schema:
+        type: string
+    responses:
+        200:
+            description: metadata for the specified table
+            $ref: '#/components/schemas/tableDoc'
+        401:
+            $ref: ./vosi-std-responses.yaml#/not-authenticated
+        403:
+            $ref: ./vosi-std-responses.yaml#/permission-denied
+        404:
+            $ref: ./vosi-std-responses.yaml#/not-found
+
+components:
+    schemas:
+        tableDoc:
+            content:
+                text/xml:
+                    schema:
+                        type: object
+                        xml:
+                            name: table
+                            prefix: vosi
+                            namespace: http://www.ivoa.net/xml/VOSITables/v1.0

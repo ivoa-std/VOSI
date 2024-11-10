@@ -1,0 +1,23 @@
+openapi: 3.1.0
+info:
+  title: VOSI endpoints
+  version: "1.1"
+  description: This is more or less the current VOSAI-1.1 standard.
+servers:
+- url: /example
+paths:
+# notes: this is how another service like TAP would include VOSI endpoints using 
+# a local copy; the commented out $ref to a standard location would also work
+    /tables:
+        $ref: ./vosi-tableset.yaml
+        #$ref: https://ivoa.net/std/VOSI/vosi-tableset.yaml
+    /tables/{name}:
+        $ref: ./vosi-table.yaml
+        #$ref: https://ivoa.net/std/VOSI/vosi-table.yaml
+
+    /availability:
+        $ref: ./paths/vosi-availability.yaml
+        #$ref: https://ivoa.net/std/VOSI/vosi-availability.yaml
+    /capabilities:
+        $ref: ./paths/vosi-capabilities.yaml
+        #$ref: https://ivoa.net/std/VOSI/vosi-capabilities.yaml
