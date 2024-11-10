@@ -1,9 +1,12 @@
 \documentclass[11pt,letter]{ivoa}
 \input tthdefs
 
+\input gitmeta
+
 \usepackage{listings}
 \lstloadlanguages{XML}
 \lstset{flexiblecolumns=true,basicstyle=\footnotesize,tagstyle=\ttfamily,showspaces=false}
+\usepackage{todonotes}
 
 \title{IVOA Support Interfaces}
 
@@ -68,10 +71,13 @@ infrastructure that enable VO applications.
 
 This document describes a set of common basic functions that VO web
 services provide in the form of a standard support interface in order to
-allow for the effective management of the VO.  There are three basic
+allow for the effective management of the VO.  There are two basic
 support functions that this document describes:  The reporting of
-capability metadata, the reporting of service availability metadata, and
-the reporting of table metadata (if applicable).
+capability metadata and
+the reporting of table metadata (if applicable).  A previous version of
+this document also required an interface for reporting service
+availability.  As discussed in sect.~\ref{sect:availability}, this
+part of the specification was dropped in version 1.2.
 
 VO service standards previous to VOSI may not be forced to
 retrospectively implement VOSI (although that should be encouraged).
@@ -114,14 +120,6 @@ the service by querying for this information directly. (See Appendix
 \ref{appendix:harvesting} for a more detailed description of this use
 case.)
 
-Once a user discovers data and services of interest, she will want to
-engage them in an analysis process. Success requires that the selected
-services are actually up and running properly as a down service can
-cause automated processing to fail completely. Registry and workflow
-services can assist with this by tracking the availability of services
-and alerting users about downtime. We envision that VOSI will allow VO
-projects to better track the overall health of the VO ecosystem. 
-
 \section{Interface bindings}
 \label{sec:bindings}
 
@@ -138,9 +136,10 @@ the HTTP scheme and shall be accessible by the GET operation in the HTTP
 protocol. The response to an HTTP POST, PUT or DELETE to these resources
 is not defined by this specification. However, if an implementation has
 no special action to perform for these requests, the normal response
-would be a HTTP 405 "Method not allowed" status code.  Both the
-capabilities and availability bindings must be available to anonymous
-requests.
+would be a HTTP 405 "Method not allowed" status code.  The
+capabilities binding must be available to anonymous
+requests.\todo{This is probably no longer true (see SSO) -- material for
+another PR}
 
 The endpoints and interface types for the support interface shall be
 defined in the service's registration using one \xmlel{capability}
@@ -151,7 +150,8 @@ section~\ref{sec:endpoints}.
 When using the REST binding, any HTTP URLs may be used. The client must
 find the appropriate URLs from the service's entry in the VO registry
 and, in general, should not try and infer the URLs from any other URLs
-for that service. However, standards for specific services may put extra
+for that service.\todo{Which is in a bit of a conflict with the
+introducton's ``by some other means''. Resolve this in another PR?} However, standards for specific services may put extra
 constraints on the form of the URLs.
 
 \section{Metadata specification}
@@ -167,7 +167,10 @@ constraints on the form of the URLs.
 \item those describing other aspects of the service 
 \end{itemize}
 
-This section defines how each of these classes is represented. The
+This section defines how each of these classes is represented.\todo{I'd
+say let's switch this to our canonical prefixes as in other Registry
+documents (vr:, vs:, \dots).  It's more readable and less of a 
+typographic chore.} The
 following typographic convention is used to represent a XML element
 defined within a particular namespace:
 
@@ -205,7 +208,7 @@ For example, one Capability might describe a cone search function and
 another the TAP implementation but these two might well apply to the
 same service.
 
-An entry for a service in the resource registry - i.e., its VOResource -
+An entry for a service in the resource registry -- i.e., its VOResource --
 contains the Dublin Core resource metadata (identifier, curation
 information, content description, etc.) followed by the service's
 capability descriptions (expressed as a series of
@@ -262,56 +265,22 @@ sent in the response to a GET or HEAD request to the registered URI.
 All VO services should provide this interface. 
 
 \subsection{Availability metadata}
+\label{sect:availability}
 
-This interface indicates whether the service is operable and the
-reliability of the service for extended and scheduled requests. The
-availability shall be represented as an XML document in which the root
-element is
-\xmlel{http://www.ivoa.net/xml/Availability/v1.0\#availability}. This
-element shall contain child elements providing the following
-information:
+Versions 1.0 and 1.1 of this specification required services to declare
+information on their current and future availability.  It was found that
+this specification was insufficient to work with multi-capability and/or
+mirrored services \citep{note:caproles}.  Also, the interface has not
+found the use that was originally anticipated.  Therefore, availability
+reporting is no longer part of VOSI, although the standards record still
+defines a corresponding standards key, indicating support for the legacy
+endpoint.
 
-\begin{itemize}
-\item \xmlel{available} -- whether the service is currently accepting requests
-\item \xmlel{upSince} -- duration for which the service has been
-continuously available
-\item \xmlel{downAt} -- the instant at which the service is next
-scheduled to be unavailable
-\item \xmlel{backAt} -- the instant at which the service is scheduled to
-become available again after down time;
-\item \xmlel{note} -- textual note, e.g. explaining the reason for unavailability. 
-\end{itemize}
-
-The elements \xmlel{upSince}, \xmlel{downAt}, \xmlel{backAt} and
-\xmlel{note} are optional. The \xmlel{available} element is mandatory.
-There may be more than one \xmlel{note} element.
-
-The XML document shall conform to the schema given in appendix
-\ref{appendix:availability} of this specification.
-
-When reporting availability, the service should do a good check on its
-underlying parts to see if it is still operational and not just make a
-simple return from a web server, e.g., if it relies on a database it
-should check that the database is still up. If any of these checks fail,
-the service should set available to false in the availability output.
-
-If a service is to be online but unavailable for work (e.g., when a
-service with a work queue intends to shut down after draining the queue)
-then the service should set available to false.
-
-There are no special elements in the availability document for the
-contact details of the service operator. These details may be given as a
-note element if they are known to the service.
-
-In the REST binding, the availability shall be a single web resource
-with a registered URL
-
-All VO services shall provide this interface. 
 
 \subsection{Table metadata}
 
  Some services deal with tabular data. These data may be the target of
- ADQL queries, as in TAP \citep{2017ivoa.spec.0509L}, or they may be the
+ ADQL queries, as in TAP \citep{2019ivoa.spec.0927D}, or they may be the
  output of other operations, as in SIAP queries. In each case, it is
  useful if the service describes the details of the tables concerned. It
  is more useful if this description can be captured in the resource
@@ -394,29 +363,22 @@ might be covered in later versions of VOSI.
 \section{Registration of VOSI endpoints}
 \label{sec:endpoints}
 
-The endpoints for the service and availability metadata shall be
+The endpoints for the service metadata shall be
 included in the registration of each service that provides them.
 
 \begin{tabular}{l l l l l}
 \label{tab:registration}
 Endpoint type & standardID value \\
-availability & \nolinkurl{ivo://ivoa.net/std/VOSI#availability} \\
 capabilities & \nolinkurl{ivo://ivoa.net/std/VOSI#capabilities} \\
 tables (1.0) & \nolinkurl{ivo://ivoa.net/std/VOSI#tables} \\
-tables (1.1) & \nolinkurl{ivo://ivoa.net/std/VOSI#tables-1.1} \\
+tables (1.1 and 1.2) & \nolinkurl{ivo://ivoa.net/std/VOSI#tables-1.1} \\
 \end{tabular}
-
-An availability endpoint shall be represented by an element named
-\xmlel{capability}, of type
-\xmlel{http://www.ivoa.net/xml/VOResource/v1.0\#Capability} (defined by
-the standard VOResource XML schema \citet{2018ivoa.spec.0625P}). The
-value of the \xmlel{standardID} attribute of the capability shall be
-\nolinkurl{ivo://ivoa.net/std/VOSI#availability}.
 
 A capabilities endpoint should be represented by an element named
 \xmlel{capability}, of type
 \xmlel{http://www.ivoa.net/xml/VOResource/v1.0\#Capability}. If such a
-capability is provided then the value of the \xmlel{standardID}
+capability\todo{Since we require this endpoint, isn't this qualification
+a bit silly?} is provided then the value of the \xmlel{standardID}
 attribute must be \nolinkurl{ivo://ivoa.net/std/VOSI#capabilities}.
 
 A tables endpoint should be represented by an element named
@@ -426,7 +388,7 @@ capability is provided then the value of the \xmlel{standardID}
 attribute must be \nolinkurl{ivo://ivoa.net/std/VOSI\#tables}, or, for
 version 1.1, \nolinkurl{ivo://ivoa.net/std/VOSI\#tables-1.1}.
 
-With all three VOSI functions, the \xmlel{capability} element that
+With both VOSI functions, the \xmlel{capability} element that
 describes the function must contain an \xmlel{interface} element of a
 type semantically appropriate for the binding of the function to the
 service; the \xmlel{accessURL} element within the \xmlel{interface}
@@ -438,9 +400,9 @@ document recommends using the
 type to encode VOSI endpoints (see the examples given in
 section~\ref{sec:examples}). 
 
-The capabilities and availability endpoints must not require any
-credentials to view.  Thus, the \xmlel{interface} registry entries for
-capabilities and availability must not contain a securityMethod element.
+The capabilities endpoint must not require any
+credentials to view\todo{See above}.  Thus, the \xmlel{interface} registry entries for
+capabilities must not contain a securityMethod element.
 
 \section{Example VOSI responses}
 \label{sec:examples}
@@ -511,15 +473,6 @@ A sample response from a capabilities resource describing an SIA service.
     <interface xsi:type="vs:ParamHTTP" role="std">
       <accessURL use="full"> 
         http://adil.ncsa.uiuc.edu/cgi-bin/voimquery/capabilities 
-      </accessURL>
-    </interface>
-  </capability>
-
-  <!-- the interface that returns this availability-->
-  <capability standardID="ivo://ivoa.net/std/VOSI#availability">
-    <interface xsi:type="vs:ParamHTTP" role="std">
-      <accessURL use="full"> 
-        http://adil.ncsa.uiuc.edu/cgi-bin/voimquery/availability 
       </accessURL>
     </interface>
   </capability>
@@ -688,215 +641,17 @@ http://example.net/srv/tables/TAP\_SCHEMA.columns).
 </vosi:table>
 \end{lstlisting}
 
-\subsection{Example 5: Availability}
-
-A sample response from an availability resource.
-
-\begin{lstlisting}[language=XML]
-<vosi:availability xmlns:vosi="http://www.ivoa.net/xml/VOSIAvailability/v1.0">
-  <vosi:available>true</vosi:available>
-  <vosi:note>service is accepting queries</vosi:note>
-</vosi:availability>
-\end{lstlisting}
 
 \appendix
-
 \section{The Complete VOSICapabilities Schema}
 \label{appendix:capabilities}
-\begin{lstlisting}[language=XML]
-<xsd:schema targetNamespace="http://www.ivoa.net/xml/VOSICapabilities/v1.0"
-    xmlns:tns="http://www.ivoa.net/xml/VOSICapabilities/v1.0"
-    xmlns:vr="http://www.ivoa.net/xml/VOResource/v1.0"
-    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    elementFormDefault="qualified"
-    attributeFormDefault="unqualified"
-    version="1.1">
 
-  <xsd:annotation>
-     <xsd:documentation>
-       A schema for formatting service capabilities as returned by a 
-       capabilities resource, defined by the IVOA Support Interfaces 
-       specification (VOSI). 
-
-       See http://www.ivoa.net/Documents/latest/VOSI.html.  
-     </xsd:documentation>
-  </xsd:annotation>
-
-  <xsd:import namespace="http://www.ivoa.net/xml/VOResource/v1.0"
-              schemaLocation="http://www.ivoa.net/xml/VOResource/v1.0" />
-
-  <!--
-    -  the root element for a VOSI capabilities metadata (section 3.1)
-    -->
-
-  <xsd:element name="capabilities">
-     <xsd:annotation>
-       <xsd:documentation>
-         A listing of capabilities supported by a service
-       </xsd:documentation>
-     </xsd:annotation>
-
-     <xsd:complexType>
-        <xsd:sequence>
-           <xsd:element name="capability" type="vr:Capability" 
-                        form="unqualified" minOccurs="0" maxOccurs="unbounded">
-
-              <xsd:annotation>
-                <xsd:documentation>
-                  A capability supported by the service.  
-                </xsd:documentation>
-
-                <xsd:documentation>
-                  A protocol-specific capability is included by specifying a
-                  vr:Capability sub-type via an xsi:type attribute on this 
-                  element.
-                </xsd:documentation>
-              </xsd:annotation>
-
-         </xsd:element>
-
-      </xsd:sequence>
-
-    </xsd:complexType>
-
-  </xsd:element>
-
-</xsd:schema>
-\end{lstlisting}
-
-\section{The Complete VOSIAvailability Schema}
-\label{appendix:availability}
-\begin{lstlisting}[language=XML]
-<xsd:schema targetNamespace="http://www.ivoa.net/xml/VOSIAvailability/v1.0"
-    xmlns:tns="http://www.ivoa.net/xml/VOSIAvailability/v1.0"
-    xmlns:vr="http://www.ivoa.net/xml/VOResource/v1.0"
-    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    elementFormDefault="qualified"
-    attributeFormDefault="unqualified"
-    version="1.1">
-
-  <xsd:annotation>
-     <xsd:documentation>
-       A schema for formatting availability metadata as returned by an
-       availability resource defined in the IVOA Support Interfaces 
-       specification (VOSI). 
-
-       See http://www.ivoa.net/Documents/latest/VOSI.html.  
-     </xsd:documentation>
-  </xsd:annotation>
-
-  <!--
-    -  the root element for a VOSI availability (section 3.3)
-    -->
-  <xsd:element name="availability" type="tns:Availability"/>
-
-  <xsd:complexType name="Availability">
-    <xsd:sequence>
-
-        <xsd:element name="available" type="xsd:boolean">
-        <xsd:annotation>
-          <xsd:documentation>
-             Indicates whether the service is currently available.
-           </xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-
-      <xsd:element name="upSince" type="xsd:dateTime" minOccurs="0">
-        <xsd:annotation>
-          <xsd:documentation>
-            The instant at which the service last became available.
-          </xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-
-      <xsd:element name="downAt" type="xsd:dateTime" minOccurs="0">
-        <xsd:annotation>
-          <xsd:documentation>
-            The instant at which the service is next scheduled to become
-            unavailable.
-          </xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-
-      <xsd:element name="backAt" type="xsd:dateTime" minOccurs="0">
-        <xsd:annotation>
-          <xsd:documentation>
-            The instant at which the service is scheduled to become available 
-            again after a period of unavailability.
-          </xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-
-      <xsd:element name="note" type="xsd:string" 
-                   minOccurs="0" maxOccurs="unbounded">
-        <xsd:annotation>
-          <xsd:documentation>
-            A textual note concerning availability.
-          </xsd:documentation>
-        </xsd:annotation>
-      </xsd:element>
-
-    </xsd:sequence>
-
-  </xsd:complexType>
-
-</xsd:schema>
-\end{lstlisting}
+\lstinputlisting[language=XML]{VOSICapabilities-v1.0.xsd}
 
 \section{The Complete VOSITables Schema}
 \label{appendix:tables}
-\begin{lstlisting}[language=XML]
-<xsd:schema targetNamespace="http://www.ivoa.net/xml/VOSITables/v1.0"
-  xmlns:tns="http://www.ivoa.net/xml/VOSITables/v1.0"
-  xmlns:vr="http://www.ivoa.net/xml/VOResource/v1.0"
-  xmlns:vs="http://www.ivoa.net/xml/VODataService/v1.1"
-  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  elementFormDefault="qualified"
-  attributeFormDefault="unqualified"
-  version="1.1">
 
-  <xsd:annotation>
-    < xsd:documentation>
-     A schema for formatting table metadata as returned by a 
-     tables resource, defined by the IVOA Support Interfaces 
-     specification (VOSI). 
-
-     See http://www.ivoa.net/Documents/latest/VOSI.html.  
-    </xsd:documentation>
-  </xsd:annotation>
-
-  <xsd:import namespace="http://www.ivoa.net/xml/VODataService/v1.1"
-    schemaLocation="http://www.ivoa.net/xml/VODataService/v1.1" />
-
-  <!--
-    -  the root element for a VOSI tableset metadata
-    -->
-  <xsd:element name="tableset" type="vs:TableSet" >
-    <xsd:annotation>
-      <xsd:documentation>
-        A description of the table metadata supported by the 
-        service associated with a VOSI-enabled resource.
-      </xsd:documentation>
-    </xsd:annotation>
-  </xsd:element>
-  
-  <!--
-    -  single table root element for a VOSI table metadata
-    -->
-  <xsd:element name="table" type="vs:Table" >
-     <xsd:annotation>
-       <xsd:documentation>
-         A description of a single table supported by the
-         service associated with a VOSI-enabled resource.
-       </xsd:documentation>
-     </xsd:annotation>
-  </xsd:element>
-
-</xsd:schema>
-\end{lstlisting}
+\lstinputlisting[language=XML]{VOSITables-v1.1.xsd}
 
 \section{Use Case for Capability Harvesting (non-normative)}
 \label{appendix:harvesting}
@@ -1004,6 +759,13 @@ information.
 
 \section{Changes from Previous Versions}
 \label{appendix:changes}
+
+\subsection{Changes since REC-1.1}
+
+\begin{itemize}
+\item Removed specification for the availability endpoint; added a brief
+discussion of the rationale.
+\end{itemize}
 
 \subsection{Changes since REC-VOSI-20110531}
 
