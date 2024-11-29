@@ -10,7 +10,7 @@ get:
         type: string
     responses:
         200:
-            description: metadata for the specified table
+            description: metadata for the specified schema or table
             $ref: '#/components/schemas/tableDoc'
         401:
             $ref: ./vosi-std-responses.yaml#/not-authenticated
@@ -19,10 +19,8 @@ get:
         404:
             $ref: ./vosi-std-responses.yaml#/not-found
 post:
-    summary: proto - update table metadata
-    description: |
-        update the tap_schema metadata from description;
-        TBD: what can be changed and what is immutable?
+    summary: proto - update table metadata and/or content (optional)
+    description: update the tap_schema metadata from a table description; may include rows to append if input format supports it
     parameters:
       - name: name
         in: path
@@ -39,15 +37,23 @@ post:
             description: update table metadata failed due to invalid input
             content:
                 text/plain:
+                schema:
+                    type: string
         401:
             $ref: ./vosi-std-responses.yaml#/not-authenticated
         403:
             $ref: ./vosi-std-responses.yaml#/permission-denied
         404:
             $ref: ./vosi-std-responses.yaml#/not-found
+        405:
+            description: this response indicates that the service does not support update of tables
+            content:
+                text/plain:
+                schema:
+                    type: string
 put:
-    summary: proto - create table
-    description: create table from description
+    summary: proto - create table (optional)
+    description: create table from description; may include rows if input format supports it
     parameters:
     - name: name
       in: path
@@ -70,8 +76,15 @@ put:
             $ref: ./vosi-std-responses.yaml#/permission-denied
         404:
             $ref: ./vosi-std-responses.yaml#/not-found
+        405:
+            description: this response indicates that the service does not support creation of tables by users
+            content:
+                text/plain:
+                schema:
+                    type: string
 delete:
-    summary: proto - delete table
+    summary: proto - delete table (optional)
+    description: delete table by name
     parameters:
     - name: name
       in: path
@@ -90,6 +103,12 @@ delete:
             $ref: ./vosi-std-responses.yaml#/permission-denied
         404:
             $ref: ./vosi-std-responses.yaml#/not-found
+        405:
+            description: this response indicates that the service does not support deletion of tables created by users
+            content:
+                text/plain:
+                schema:
+                    type: string
 
 components:
     schemas:
@@ -102,11 +121,6 @@ components:
                             name: table
                             prefix: vosi
                             namespace: http://www.ivoa.net/xml/VOSITables/v1.0
-                ## Note: adding the VOTable type below has these effects:
-                # put: allows VOTable to be used to create a table, empty only? with rows?
-                # post: allows VOTable to be used to update table metadata, empty only? add rows?
-                # get: allows caller to request table description as an empty VOTable
-                # there are some subtle differences in metadata content
                 application/x-votable+xml:
                     schema:
                         type: object
