@@ -4,15 +4,16 @@
 DOCNAME = VOSI
 
 # count up; you probably do not want to bother with versions <1.0
-DOCVERSION = 1.1
+DOCVERSION = 1.2
 
 # Publication date, ISO format; update manually for "releases"
-DOCDATE = 2022-03-10
+DOCDATE = 2024-11-11
 
 # What is it you're writing: NOTE, WD, PR, or REC
 DOCTYPE = WD
 
-AUTHOR_EMAIL = msdemlei@ari.uni-heidelberg.de
+# for push to doc repo
+AUTHOR_EMAIL = pdowler.cadc@gmail.com 
 
 # Source files for the TeX document (but the main file must always
 # be called $(DOCNAME).tex

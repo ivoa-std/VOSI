@@ -10,7 +10,7 @@ get:
         type: string
     responses:
         200:
-            description: metadata for the specified table
+            description: metadata for the specified schema or table
             $ref: '#/components/schemas/tableDoc'
         401:
             $ref: ./vosi-std-responses.yaml#/not-authenticated
@@ -18,6 +18,97 @@ get:
             $ref: ./vosi-std-responses.yaml#/permission-denied
         404:
             $ref: ./vosi-std-responses.yaml#/not-found
+post:
+    summary: proto - update table metadata and/or content (optional)
+    description: update the tap_schema metadata from a table description; may include rows to append if input format supports it
+    parameters:
+      - name: name
+        in: path
+        description: the fully qualified name of the table to create
+        required: true
+        schema:
+            type: string
+    requestBody:
+        $ref: '#/components/schemas/tableDoc'
+    responses:
+        204:
+            description: table updated
+        400:
+            description: update table metadata failed due to invalid input
+            content:
+                text/plain:
+                schema:
+                    type: string
+        401:
+            $ref: ./vosi-std-responses.yaml#/not-authenticated
+        403:
+            $ref: ./vosi-std-responses.yaml#/permission-denied
+        404:
+            $ref: ./vosi-std-responses.yaml#/not-found
+        405:
+            description: this response indicates that the service does not support update of tables
+            content:
+                text/plain:
+                schema:
+                    type: string
+put:
+    summary: proto - create table (optional)
+    description: create table from description; may include rows if input format supports it
+    parameters:
+    - name: name
+      in: path
+      description: the fully qualified name of the table to create
+      required: true
+      schema:
+        type: string
+    requestBody:
+        $ref: '#/components/schemas/tableDoc'
+    responses:
+        201:
+          description: table created
+        400:
+            description: create table failed due to invalid input
+            content:
+                text/plain:
+        401:
+            $ref: ./vosi-std-responses.yaml#/not-authenticated
+        403:
+            $ref: ./vosi-std-responses.yaml#/permission-denied
+        404:
+            $ref: ./vosi-std-responses.yaml#/not-found
+        405:
+            description: this response indicates that the service does not support creation of tables by users
+            content:
+                text/plain:
+                schema:
+                    type: string
+delete:
+    summary: proto - delete table (optional)
+    description: delete table by name
+    parameters:
+    - name: name
+      in: path
+      description: |
+        the table to delete; 
+        TBD: remove from tap_schema and drop from db?
+      required: true
+      schema:
+        type: string
+    responses:
+        204:
+          description: table dropped
+        401:
+            $ref: ./vosi-std-responses.yaml#/not-authenticated
+        403:
+            $ref: ./vosi-std-responses.yaml#/permission-denied
+        404:
+            $ref: ./vosi-std-responses.yaml#/not-found
+        405:
+            description: this response indicates that the service does not support deletion of tables created by users
+            content:
+                text/plain:
+                schema:
+                    type: string
 
 components:
     schemas:
@@ -30,3 +121,9 @@ components:
                             name: table
                             prefix: vosi
                             namespace: http://www.ivoa.net/xml/VOSITables/v1.0
+                application/x-votable+xml:
+                    schema:
+                        type: object
+                        xml:
+                            name: VOTABLE
+                            namespace: http://www.ivoa.net/xml/VOTable/v1.3
