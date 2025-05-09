@@ -19,6 +19,14 @@ permission-denied:
       text/plain:
         schema:
           type: string
+
+bad-request:
+    description: invalid request/input
+    content:
+      text/plain:
+        schema:
+          type: string
+
 not-found:
     description: resource not found
     content:

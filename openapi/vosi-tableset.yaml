@@ -1,8 +1,8 @@
 get:
     operationId: get-tableset
-    tag: VOSI
-    tag:  table metadata
-    summary: VOSI Tables
+    tags: 
+      - VOSI table metadata
+    summary: VOSI TableSet
     description: Provides the table metadata in the form of a TableSet description
     parameters:
         - name: detail
@@ -14,7 +14,6 @@ get:
             enum: [min, max]
     responses:
         200:
-            description: metadata for schemas and tables
             $ref: '#/components/schemas/tablesetDoc'
         401:
             $ref: ./vosi-std-responses.yaml#/not-authenticated
@@ -24,6 +23,7 @@ get:
 components:
     schemas:
         tablesetDoc:
+            description: metadata for schemas and tables
             content:
                 text/xml:
                     schema:
