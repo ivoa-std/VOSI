@@ -1,10 +1,11 @@
 get:
+    operationId: get-tableset
     tag: VOSI
     tag:  table metadata
     summary: VOSI Tables
     description: Provides the table metadata in the form of a TableSet description
     parameters:
-        - name: DETAIL
+        - name: detail
           in: query
           description: level of detail requested
           required: false

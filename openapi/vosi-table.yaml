@@ -1,16 +1,21 @@
 get:
+    operationId: read-table-metadata
+    tag: VOSI-1.2
     summary: get metadata for the specified table
     description: provides the table metadata for a single schema or table
     parameters:
-    - name: name
-      in: path
-      description: a single schema name or table name as provided in tap_schema
-      required: true
-      schema:
-        type: string
+      - name: name
+        in: path
+        description: a single schema name or table name as provided in tap_schema
+        required: true
+        schema:
+          type: string
     responses:
         200:
             description: metadata for the specified schema or table
+            $ref: ./vosi-anon-read.yaml
+            $ref: ./vosi-group-read.yaml
+            $ref: ./vosi-group-write.yaml
             $ref: '#/components/schemas/tableDoc'
         401:
             $ref: ./vosi-std-responses.yaml#/not-authenticated
@@ -19,6 +24,8 @@ get:
         404:
             $ref: ./vosi-std-responses.yaml#/not-found
 post:
+    operationId: update-table-metadata
+    tag: VOSI-1.2
     summary: proto - update table metadata and/or content (optional)
     description: update the tap_schema metadata from a table description; may include rows to append if input format supports it
     parameters:
@@ -28,6 +35,9 @@ post:
         required: true
         schema:
             type: string
+      - $ref: ./vosi-anon-read.yaml
+      - $ref: ./vosi-group-read.yaml
+      - $ref: ./vosi-group-write.yaml
     requestBody:
         $ref: '#/components/schemas/tableDoc'
     responses:
@@ -46,21 +56,22 @@ post:
         404:
             $ref: ./vosi-std-responses.yaml#/not-found
         405:
-            description: this response indicates that the service does not support update of tables
-            content:
-                text/plain:
-                schema:
-                    type: string
+            $ref: ./vosi-std-responses.yaml#/not-implemented
 put:
+    operationId: create-table
+    tag: VOSI-1.2
     summary: proto - create table (optional)
     description: create table from description; may include rows if input format supports it
     parameters:
-    - name: name
-      in: path
-      description: the fully qualified name of the table to create
-      required: true
-      schema:
-        type: string
+      - name: name
+        in: path
+        description: the fully qualified name of the table to create
+        required: true
+        schema:
+          type: string
+      - $ref: ./vosi-anon-read.yaml
+      - $ref: ./vosi-group-read.yaml
+      - $ref: ./vosi-group-write.yaml
     requestBody:
         $ref: '#/components/schemas/tableDoc'
     responses:
@@ -77,20 +88,16 @@ put:
         404:
             $ref: ./vosi-std-responses.yaml#/not-found
         405:
-            description: this response indicates that the service does not support creation of tables by users
-            content:
-                text/plain:
-                schema:
-                    type: string
+            $ref: ./vosi-std-responses.yaml#/not-implemented
 delete:
+    operationId: delete-table
+    tag: VOSI-1.2
     summary: proto - delete table (optional)
     description: delete table by name
     parameters:
     - name: name
       in: path
-      description: |
-        the table to delete; 
-        TBD: remove from tap_schema and drop from db?
+      description: the table to delete
       required: true
       schema:
         type: string
@@ -104,11 +111,7 @@ delete:
         404:
             $ref: ./vosi-std-responses.yaml#/not-found
         405:
-            description: this response indicates that the service does not support deletion of tables created by users
-            content:
-                text/plain:
-                schema:
-                    type: string
+            $ref: ./vosi-std-responses.yaml#/not-implemented
 
 components:
     schemas:

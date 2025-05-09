@@ -279,12 +279,12 @@ endpoint.
 
 \subsection{Table metadata}
 
- Some services deal with tabular data. These data may be the target of
- ADQL queries, as in TAP \citep{2019ivoa.spec.0927D}, or they may be the
- output of other operations, as in SIAP queries. In each case, it is
- useful if the service describes the details of the tables concerned. It
- is more useful if this description can be captured in the resource
- registry.
+Some services deal with tabular data. These data may be the target of
+ADQL queries, as in TAP \citep{2019ivoa.spec.0927D}, or they may be the
+output of other operations, as in SIAP queries. In each case, it is
+useful if the service describes the details of the tables concerned. It
+is more useful if this description can be captured in the resource
+registry.
 
 The VODataService standard \citep{2021ivoa.spec.1102D} defines XML
 elements for describing a set of tables. These elements can be included
@@ -299,28 +299,38 @@ The table metadata for a single table (see below) shall be represented as an
 XML document of which the root element is of type\\
 $$\hbox{\xmlel{http://www.ivoa.net/xml/VODataService/v1.1\#Table}}$$\\
 This element may contain any mix of elements allowed by the VODataService XML schema.
+The table metadata for a single table can also be representated using an empty VOTable.
 
-In the REST binding, the TableSet metadata shall be a hierarchical web
-resource with a registered URL.  There are two levels of TableSet
-metadata detail that may be returned from the base \textit{tables}
-endpoint.  Maximum detail (max) is the complete metadata including all
-details of the Table elements.  Minimum detail (min) includes the full
-set of Table elements with names and optional descriptions, but does not
-include Table elements of type Column or ForeignKey.
+The REST interface for the tables endpoint in described in detail in the OpenAPI
+specification (see ???). Here we give a brief summary of the main use and some
+examples but defer to the OpenAPI documents as the definitive specification.
 
-If the parameter \textit{detail} accompanies the request with values of
-either \textit{max} or \textit{min}, the service should take this as a
-suggestion as to what level of detail to return, but may return either
-level.  If the parameter \textit{detail} is not present, the service may
-choose the level of metadata detail to return.
+\subsubsection{Tables}
+The TableSet metadata is a hierarchical web resource with two levels of detail.
+Maximum detail (max) is the complete metadata including all details of the table
+structure (columns and foreign keys).  Minimum detail (min) includes the full
+set of tables (organised by schema) with names and optional descriptions, but does not
+include column of foreign key information.
 
 For example, the request:
 
 \begin{verbatim}
+GET http://example.net/srv/tables
+\end{verbatim}
+\noindent would return the default (service-chosen) amount of detail (either just table
+listing or the complete TableSet metadata). 
+
+The caller can use the \verb|detail| parameter to request a specific amount of detail.
+For example:
+\begin{verbatim}
 GET http://example.net/srv/tables?detail=min
 \end{verbatim}
-
-should be taken as a suggestion to return the minimum level of TableSet
+\noindent should be taken as a suggestion to return the minimum level of TableSet
+metadata detail, while:
+\begin{verbatim}
+GET http://example.net/srv/tables?detail=max
+\end{verbatim}
+\noindent should be taken as a suggestion to return the maximum level of TableSet
 metadata detail.
 
 Services with a large number of tables and/or columns cannot normally
@@ -342,9 +352,64 @@ detail, starting:
 \begin{verbatim}
 <vosi:table xmlns:vosi="http://www.ivoa.net/xml/VOSITables/v1.0">
     <name>ivoa.ObsCore</name>
+    ...
     <column>
     ...
-\end{verbatim} 
+\end{verbatim}
+
+The above \xmlel{vosi:table} document is the default response format; clients 
+may request the alternate VOTable format using the HTTP \verb|accept| header with a
+value of the VOTable mime-type (\verb|"application/x-votable+xml"|).
+
+\subsubsection{User-managed Tables}
+Some services may allow users to create tables using the tables endpoint. The lifetime
+of such tables and the authentication and authorization requirements for using this feature
+are an implementation detail that may vary from one service to another. At one extreme,
+users may be able to create tables anonymously and the table will persist for a short 
+perioid of time (days or weeks) before being removed. At the other extreme, users would
+have to authenticate, have permission to create tables in a specific schema, and the tables
+would persist forever.
+
+The visibility of user-managed tables is also an implementation detail not specified here.
+Expectation: short-lived anonymously created tables would not be visible (e.g. not listed 
+by the tables endpoint of the service or be added to the \verb|tap_schema| of a TAP service).
+Expectation: permanent tables created (owned) by an authenticated user could be made
+visible to and usable by other users (e.g. included in tables endpoint output and added to
+the \verb|tap_schema| of a TAP service).
+
+To create a new table:
+\begin{verbatim}
+PUT <xml> http://example.net/srv/tables/schema1.table1
+\end{verbatim}
+\noindent where the \verb|<xml>| payload can be either a VOSI-table or VOTable document.
+
+To update table metadata:
+\begin{verbatim}
+POST <xml> http://example.net/srv/tables/schema1.table1
+\end{verbatim}
+\noindent where only some of the table metadata can me modified (see below). In addition, if
+the VOTable format is used for updating metadata, the VOTable must not contain any rows.
+
+To delete a table:
+\begin{verbatim}
+DELETE http://example.net/srv/tables/schema1.table1
+\end{verbatim}
+
+\subsubsection{Mutable Table Metadata}
+Metadata that can be updated:
+\begin{itemize}
+\item table metadata that can be updated: utype, description
+\item column metadata that can be updated: utype, ucd, unit, description
+\end{itemize}
+
+Column metadata where update would imply an structural change to the table (e.g. an SQL
+alter table statement):
+\begin{itemize}
+\item column datatype, arraysize, xtype: alter column datatype?
+\item input table description has fewer columns: drop column?
+\item input table description has more columns: add column?
+\end{itemize}
+\noindent These are probably too fraught with pain in the details.
 
 \subsection{Non-service metadata (non-normative)}
 

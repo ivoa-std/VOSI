@@ -1,4 +1,5 @@
 head:
+    operationId: probe-capabilities
     tag: VOSI
     summary: VOSI Capabilities with SSO-next prototype
     description: |
@@ -9,12 +10,13 @@ head:
         for available authentication methods.
     responses:
         200:
-            description: successful probe, service allows request from caller
+            $ref: ./vosi-std-responses.yaml#/authenticated
         401:
             $ref: ./vosi-std-responses.yaml#/not-authenticated
         403:
             $ref: ./vosi-std-responses.yaml#/permission-denied
 get:
+    operationId: read-capabilities
     tag: VOSI
     summary: VOSI Capabilities
     description: Get the set of VOResource capability descriptions for this service.
@@ -25,6 +27,7 @@ get:
             text/xml:
               schema:
                 $ref: '#/components/schemas/capabilities'
+          $ref: ./vosi-std-responses.yaml#/not-authenticated
         401:
             $ref: ./vosi-std-responses.yaml#/not-authenticated
         403:
