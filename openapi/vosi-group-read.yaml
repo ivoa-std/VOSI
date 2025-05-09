@@ -1,0 +1,7 @@
+# request header
+name: x-vosi-group-read
+in: header
+description: a GMS group identifier indicating a group with read permission
+required: false
+schema:
+  type: string
