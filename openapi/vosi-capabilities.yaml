@@ -1,5 +1,7 @@
 head:
-    tag: VOSI
+    operationId: probe-capabilities
+    tags: 
+      - VOSI Capabilities
     summary: VOSI Capabilities with SSO-next prototype
     description: |
         Get standard headers for the service. The standard headers should include
@@ -9,30 +11,32 @@ head:
         for available authentication methods.
     responses:
         200:
-            description: successful probe, service allows request from caller
+            $ref: ./vosi-std-responses.yaml#/authenticated
         401:
             $ref: ./vosi-std-responses.yaml#/not-authenticated
         403:
+            $ref: ./vosi-std-responses.yaml#/authenticated
             $ref: ./vosi-std-responses.yaml#/permission-denied
 get:
-    tag: VOSI
-    summary: VOSI Capabilities
+    operationId: read-capabilities
+    tags: 
+      - VOSI
+    summary: VOSI Capabilities with SSO-next prototype
     description: Get the set of VOResource capability descriptions for this service.
     responses:
         200:
-          description: A VOSI Capabilities document in XML.
-          content:
-            text/xml:
-              schema:
-                $ref: '#/components/schemas/capabilities'
+          $ref: '#/components/schemas/capabilities'
+          $ref: ./vosi-std-responses.yaml#/authenticated
         401:
             $ref: ./vosi-std-responses.yaml#/not-authenticated
         403:
+            $ref: ./vosi-std-responses.yaml#/authenticated
             $ref: ./vosi-std-responses.yaml#/permission-denied
 
 components:
     schemas:
         capabilities:
+            description: A VOSI Capabilities document
             content:
                 text/xml:
                     schema:
