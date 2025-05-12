@@ -40,3 +40,10 @@ not-implemented:
     text/plain:
       schema:
         type: string
+
+too-large:
+  description: the request content exceeds a server-side limitation on size
+  content:
+    text/plain:
+      schema:
+        type: string

@@ -305,7 +305,7 @@ The REST interface for the tables endpoint in described in detail in the OpenAPI
 specification (see ???). Here we give a brief summary of the main use and some
 examples but defer to the OpenAPI documents as the definitive specification.
 
-\subsubsection{Tables}
+\subsubsection{TableSet}
 The TableSet metadata is a hierarchical web resource with two levels of detail.
 Maximum detail (max) is the complete metadata including all details of the table
 structure (columns and foreign keys).  Minimum detail (min) includes the full
@@ -337,6 +337,7 @@ Services with a large number of tables and/or columns cannot normally
 respond with a usable TableSet document that has the maximum level of
 detail so may wish to always respond with the minimum level of detail.
 
+\subsubsection{Table}
 The REST endpoint must also support a child resource for each table
 described in the TableSet document.  The child resource must be named as
 it appears in the name of the corresponding child Table element.  For
@@ -345,8 +346,7 @@ example:
 \begin{verbatim}
 GET http://example.net/srv/tables/ivoa.ObsCore
 \end{verbatim}
-
-would return a Table document describing the ivoa.ObsCore table in full
+\noindent would return a Table document describing the ivoa.ObsCore table in full
 detail, starting:
 
 \begin{verbatim}
@@ -355,6 +355,7 @@ detail, starting:
     ...
     <column>
     ...
+</vosi:table>
 \end{verbatim}
 
 The above \xmlel{vosi:table} document is the default response format; clients 
@@ -366,7 +367,7 @@ Some services may allow users to create tables using the tables endpoint. The li
 of such tables and the authentication and authorization requirements for using this feature
 are an implementation detail that may vary from one service to another. At one extreme,
 users may be able to create tables anonymously and the table will persist for a short 
-perioid of time (days or weeks) before being removed. At the other extreme, users would
+period of time (days or weeks) before being removed. At the other extreme, users would
 have to authenticate, have permission to create tables in a specific schema, and the tables
 would persist forever.
 
@@ -377,23 +378,42 @@ Expectation: permanent tables created (owned) by an authenticated user could be 
 visible to and usable by other users (e.g. included in tables endpoint output and added to
 the \verb|tap_schema| of a TAP service).
 
+The additional actions to allow users to manage tables are optional. The OpenAPI specification
+says that a tables endpoint that does not support these actions must respond with an HTTP
+405 status code; we expect that current services already respond this way. \todo{Do we need a
+registry extension for VOSI-tables? just listing http verbs would be enough to avoid probing
+for a 405 aka try and see if it works}
+
 To create a new table:
 \begin{verbatim}
 PUT <xml> http://example.net/srv/tables/schema1.table1
 \end{verbatim}
-\noindent where the \verb|<xml>| payload can be either a VOSI-table or VOTable document.
+\noindent where the \verb|<xml>| payload can be either a VOSI-table or VOTable document. For
+a VOTable payload, the table may contain rows and those rows would be inserted into the created
+table.
 
 To update table metadata:
 \begin{verbatim}
 POST <xml> http://example.net/srv/tables/schema1.table1
 \end{verbatim}
 \noindent where only some of the table metadata can me modified (see below). In addition, if
-the VOTable format is used for updating metadata, the VOTable must not contain any rows.
+the VOTable format is used for updating metadata, the VOTable would not contain any rows (but
+see below).
 
 To delete a table:
 \begin{verbatim}
 DELETE http://example.net/srv/tables/schema1.table1
 \end{verbatim}
+
+Some services may allow the caller to append additional rows to a table. This could be
+implemented by accepting a table update that carries additional rows:
+\begin{verbatim}
+POST <votable> http://example.net/srv/tables/schema1.table1
+\end{verbatim}
+\noindent where some metadata may be updated and rows in the input VOTable are appended
+to the existing table. Other tabular data formats that are not sufficient for create may be
+supported for appending rows: csv, tsv, fits, etc. \todo{Service should advertise the
+list of acceptable formats}
 
 \subsubsection{Mutable Table Metadata}
 Metadata that can be updated:
@@ -402,14 +422,17 @@ Metadata that can be updated:
 \item column metadata that can be updated: utype, ucd, unit, description
 \end{itemize}
 
-Column metadata where update would imply an structural change to the table (e.g. an SQL
+Column metadata where update would imply a structural change to the table (e.g. an SQL
 alter table statement):
 \begin{itemize}
 \item column datatype, arraysize, xtype: alter column datatype?
 \item input table description has fewer columns: drop column?
 \item input table description has more columns: add column?
+\item rename table
+\item rename column(s)
 \end{itemize}
-\noindent These are probably too fraught with pain in the details.
+\noindent These are probably too fraught with pain in the details. \todo{Some CADC users have
+asked for table and column renaming, which should be easy enough to implement}
 
 \subsection{Non-service metadata (non-normative)}
 
