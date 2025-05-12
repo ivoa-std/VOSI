@@ -49,6 +49,8 @@ post:
             $ref: ./vosi-std-responses.yaml#/not-found
         405:
             $ref: ./vosi-std-responses.yaml#/not-implemented
+        413:
+            $ref: ./vosi-std-responses.yaml#/too-large
 put:
     operationId: create-table
     tags: 
@@ -78,6 +80,8 @@ put:
             $ref: ./vosi-std-responses.yaml#/not-found
         405:
             $ref: ./vosi-std-responses.yaml#/not-implemented
+        413:
+            $ref: ./vosi-std-responses.yaml#/too-large
 delete:
     operationId: delete-table
     tags: 
