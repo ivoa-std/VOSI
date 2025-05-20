@@ -33,6 +33,9 @@ post:
         required: true
         schema:
             type: string
+      - $ref: ./vosi-anon-read.yaml
+      - $ref: ./vosi-group-read.yaml
+      - $ref: ./vosi-group-write.yaml
     requestBody:
         description: a table description
         $ref: '#/components/schemas/tableDoc'
@@ -64,6 +67,9 @@ put:
         required: true
         schema:
             type: string
+      - $ref: ./vosi-anon-read.yaml
+      - $ref: ./vosi-group-read.yaml
+      - $ref: ./vosi-group-write.yaml
     requestBody:
         description: a table description
         $ref: '#/components/schemas/tableDoc'
@@ -111,6 +117,22 @@ components:
     schemas:
         tableDoc:
             description: metadata for the specified schema or table
+            headers:
+                x-vosi-anon-read:
+                  description: flag indicating that the resource allows anonymous read
+                  required: false
+                  schema:
+                    type: boolean
+                x-vosi-group-read:
+                  description: a GMS group identifier indicating a group with read permission
+                  required: false
+                  schema:
+                    type: string
+                x-vosi-group-write:
+                  description: a GMS group identifier indicating a group with write permission
+                  required: false
+                  schema:
+                    type: string
             content:
                 text/xml:
                     schema:

@@ -1,0 +1,8 @@
+# request header
+name: x-vosi-anon-read
+in: header
+description: flag indicating that the resource allows anonymous read
+required: false
+schema:
+  type: boolean
+
