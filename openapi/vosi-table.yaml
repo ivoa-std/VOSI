@@ -21,7 +21,7 @@ get:
         404:
             $ref: ./vosi-std-responses.yaml#/not-found
 post:
-    operationId: update-table-metadata
+    operationId: update-table
     tags: 
       - VOSI table metadata
     summary: proto - update table metadata and/or content (optional)
