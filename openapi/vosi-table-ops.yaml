@@ -9,9 +9,9 @@ get:
         200:
             $ref: ../uws/uws-responses.yaml#/job-listing
         401:
-            $ref: ../vosi/vosi-std-responses.yaml#/not-authenticated
+            $ref: ./vosi-std-responses.yaml#/not-authenticated
         403:
-            $ref: ../vosi/vosi-std-responses.yaml#/permission-denied
+            $ref: ./vosi-std-responses.yaml#/permission-denied
 post:
     operationId: table-ops-job-create
     tags:
@@ -41,10 +41,8 @@ post:
         303:
             $ref: ../uws/uws-responses.yaml#/created
         401:
-            $ref: ../vosi/vosi-std-responses.yaml#/not-authenticated
+            $ref: ./vosi-std-responses.yaml#/not-authenticated
         403:
-            $ref: ../vosi/vosi-std-responses.yaml#/permission-denied
+            $ref: ./vosi-std-responses.yaml#/permission-denied
         404:
             $ref: ./vosi-std-responses.yaml#/not-found
-        405:
-            $ref: ./vosi-std-responses.yaml#/not-implemented
