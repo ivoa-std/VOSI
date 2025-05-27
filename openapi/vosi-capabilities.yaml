@@ -19,7 +19,7 @@ head:
 get:
     operationId: read-capabilities
     tags: 
-      - VOSI
+      - VOSI Capabilities
     summary: VOSI Capabilities with SSO-next prototype
     description: Get the set of VOResource capability descriptions for this service.
     responses:
