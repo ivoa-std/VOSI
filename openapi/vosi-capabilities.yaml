@@ -15,7 +15,6 @@ head:
         401:
             $ref: ./vosi-std-responses.yaml#/not-authenticated
         403:
-            $ref: ./vosi-std-responses.yaml#/authenticated
             $ref: ./vosi-std-responses.yaml#/permission-denied
 get:
     operationId: read-capabilities
@@ -26,11 +25,9 @@ get:
     responses:
         200:
           $ref: '#/components/schemas/capabilities'
-          $ref: ./vosi-std-responses.yaml#/authenticated
         401:
             $ref: ./vosi-std-responses.yaml#/not-authenticated
         403:
-            $ref: ./vosi-std-responses.yaml#/authenticated
             $ref: ./vosi-std-responses.yaml#/permission-denied
 
 components:
