@@ -37,12 +37,12 @@ components:
             content:
                 text/xml:
                     schema:
-                        type: string
+                        type: object
                         xml:
                             name: capabilities
                             prefix: vosi
                             namespace: http://www.ivoa.net/xml/VOSICapabilities/v1.0
-                        example: |
+                    example: |
                             <vosi:capabilities xmlns:vosi="http://www.ivoa.net/xml/VOSICapabilities/v1.0"
                                 xmlns:vr="http://www.ivoa.net/xml/VOResource/v1.0"
                                 xmlns:vs="http://www.ivoa.net/xml/VODataService/v1.1"
